@@ -15,7 +15,8 @@ const Prasadam = () => {
         setLoading(true);
 
         const [poojaRes, prasadamRes] = await Promise.all([
-          api.get("/api/v1/devotee/pooja/"),
+          api.get("/api/v1/devotee/pooja/?page=1&size=18&search=prasadam"),
+          api.get("/api/v1/devotee/pooja/?page=1&size=18&search=prasada"),
           api.get("/api/v1/devotee/prasadam/"),
         ]);
 
