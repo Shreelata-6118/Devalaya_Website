@@ -94,17 +94,18 @@ const EventDetails = () => {
       window.dispatchEvent(new Event('storage'));
     }
 
-    // Comment out navigate if you only want to open drawer
-    // navigate('/cart');
-    setCartDrawerOpen(true); // ✅ Now this works
+    setCartDrawerOpen(true);
   };
 
   const getImageUrl = (event) => {
+    if (event.image) {
+      return event.image;
+    }
     if (event.temple?.images && event.temple.images.length > 0) {
       const imagePath = event.temple.images[0].image;
       return imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`;
     }
-    return 'https://via.placeholder.com/600x400?text=Event+Image';
+    return 'https://via.placeholder.com/1200x400?text=Event+Image';
   };
 
   const handleGoBack = () => {
@@ -142,86 +143,67 @@ const EventDetails = () => {
   return (
     <>
       <div className="event-details-container">
-        <button onClick={handleGoBack} className="back-button">← Back to Events</button>
+        <div className="event-banner" style={{ backgroundImage: `url(${getImageUrl(event)})` }}>
+          <video src={`${getImageUrl(event)}`} autoPlay loop muted playsInline style={{
+            width: '100%',
+            maxHeight: '350px',
+            height: 'auto',
+            objectFit: 'cover',
+            borderRadius: 16,
+            boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+          }}></video>
+        </div>
 
         <div className="event-details-card">
-          <div className="event-image-section">
-            <img
-              src={getImageUrl(event)}
-              alt={event.name}
-              className="event-detail-image"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/600x400?text=Event+Image';
-              }}
-            />
-          </div>
-
           <div className="event-content-section">
             <div className="event-header">
               <h1 className="event-title">{event.name}</h1>
-              <div className="event-status">
-                {event.is_expired ? (
-                  <span className="status-expired">Expired</span>
-                ) : (
-                  <span className="status-active">Active</span>
-                )}
-              </div>
+              <div className="temple-info-header"><span className="info-label"><strong>Temple: </strong></span><span className="temple-info-header">{event.temple.name}</span></div>
             </div>
 
-            <div className="event-details-info">
-              <div className="info-section">
-                <h3>Event Details</h3>
-                <p className="event-description">{event.details}</p>
-              </div>
-
-              <div className="info-section">
-                <h3>Temple Information</h3>
-                <div className="temple-info">
-                  <p><strong>Name:</strong> {event.temple.name}</p>
+            <div className="event-details-body">
+              <div className="event-info-main">
+                <div className="info-section">
+                 
+                  <span className="info-value"><strong>About: </strong>{event.details}</span>
                 </div>
+
+                
+
+                {event.pooja?.included && (
+                  <div className="info-section">
+                    <span className="info-value"><strong>Include: </strong>{event.pooja.included}</span>
+                  </div>
+                )}
+
+                {event.pooja?.excluded && (
+                  <div className="info-section">
+                    <span className="info-value"><strong>Benefits: </strong>{event.pooja.excluded}</span>
+                  </div>
+                )}
               </div>
 
               {event.pooja && (
-                <div className="info-section">
-                  <h3>Pooja Details</h3>
-                  <div className="pooja-info">
-                    <p><strong>Pooja Name:</strong> {event.pooja.name}</p>
-                    <p><strong>Included:</strong> {event.pooja.included}</p>
-                    <p className="final-total"><strong>Total Cost:</strong> ₹{event.pooja.original_cost}</p>
-                    {event.pooja.prasad_delivery && (
-                      <p className="prasad-delivery">✓ Prasad delivery available</p>
+                <div className="event-actions-section">
+                  <div className="cost-info">
+                    <span className="info-label">Cost:</span>
+                    {event.pooja.original_cost ? ( // Use original_cost for display
+                      <span className="cost-value">₹{event.pooja.original_cost}</span>
+                    ) : (
+                      null
                     )}
                   </div>
+                  {!event.is_expired ? (
+                    <button onClick={handleParticipate} className="participate-button">
+                      Participate in Event
+                    </button>
+                  ) : <div className="expired-message">Event Expired</div>}
                 </div>
-              )}
-
-              {event.pujari && (
-                <div className="info-section">
-                  <h3>Pujari Information</h3>
-                  <div className="pujari-info">
-                    <p><strong>Name:</strong> {event.pujari.name}</p>
-                    <p><strong>Location:</strong> {event.pujari.city}, {event.pujari.district}</p>
-                    <p><strong>Status:</strong> {event.pujari.is_active ? 'Active' : 'Inactive'}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="event-actions">
-              {!event.is_expired ? (
-                <button onClick={handleParticipate} className="participate-button">
-                  PARTICIPATE IN EVENT
-                </button>
-              ) : (
-                <p className="expired-message">This event has expired and is no longer available for participation.</p>
               )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* ✅ Render the cart drawer */}
       <CartDrawer open={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
     </>
   );
