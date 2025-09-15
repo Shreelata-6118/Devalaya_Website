@@ -10,34 +10,44 @@ const PujaList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const pujasPerPage = 15;
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 18; // As per the user's request
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPujas = async () => {
-      setLoading(true);
-      try {
-        const response = await api.get("/api/v1/devotee/pooja/?page_size=1000");
-        let pujaList = response.data?.results || [];
+    fetchPujas(currentPage);
+  }, [currentPage]);
 
-        // Remove prasadam and chadhava entries
-        pujaList = pujaList.filter((puja) => {
-          const checkText = `${puja.name || ""} ${puja.details || ""} ${puja.description || ""}`.toLowerCase();
-          return !checkText.includes("prasadam") && !checkText.includes("chadhava");
-        });
+  const fetchPujas = async (page) => {
+    setLoading(true);
+    try {
+      const response = await api.get(`/api/v1/devotee/pooja/?page=${page}&size=${itemsPerPage}`);
+      let pujaList = response.data?.results || [];
+      const totalCount = response.data?.count || 0;
+      setTotalPages(Math.ceil(totalCount / itemsPerPage));
 
-        setPujas(pujaList);
-      } catch (err) {
-        console.error("Failed to load pujas:", err);
-        setError("Failed to load pujas");
-      } finally {
-        setLoading(false);
-      }
-    };
+      // Remove prasadam and chadhava entries
+      /*
+      pujaList = pujaList.filter((puja) => {
+        const checkText = `${puja.name || ""} ${puja.details || ""} ${puja.description || ""}`.toLowerCase();
+        return !checkText.includes("prasadam") && !checkText.includes("chadhava");
+      });
+      */
 
-    fetchPujas();
-  }, []);
+      setPujas(pujaList);
+    } catch (err) {
+      console.error("Failed to load pujas:", err);
+      setError("Failed to load pujas");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   const filteredPujas = pujas.filter((puja) => {
     const categoryFilter = selectedCategory.toLowerCase();
@@ -58,10 +68,7 @@ const PujaList = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredPujas.length / pujasPerPage);
-  const indexOfLastPuja = currentPage * pujasPerPage;
-  const indexOfFirstPuja = indexOfLastPuja - pujasPerPage;
-  const currentPujas = filteredPujas.slice(indexOfFirstPuja, indexOfLastPuja);
+  
 
   const handleBookNow = (puja) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -99,27 +106,7 @@ const PujaList = () => {
     "Anushthan",
   ];
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
-
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxVisible = 6;
-    let start = Math.max(1, currentPage - 2);
-    let end = Math.min(totalPages, start + maxVisible - 1);
-    if (end - start < maxVisible - 1) {
-      start = Math.max(1, end - maxVisible + 1);
-    }
-    for (let i = start; i <= end; i++) {
-      pageNumbers.push(i);
-    }
-    return pageNumbers;
-  };
+  
 
   const getImageUrl = (puja) => {
     if (puja?.images?.length > 0 && puja.images[0].image) {
@@ -130,6 +117,35 @@ const PujaList = () => {
       return puja.god.image;
     }
     return "https://via.placeholder.com/400x220?text=No+Image";
+  };
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPageButtons = 3; // Show a maximum of 3 page numbers
+
+    if (totalPages <= maxPageButtons) {
+      // If total pages are less than or equal to maxPageButtons, show all pages
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
+      let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+      // Adjust startPage if we are at the end of the total pages
+      if (endPage === totalPages) {
+        startPage = Math.max(1, totalPages - maxPageButtons + 1);
+      }
+      // Adjust endPage if we are at the beginning of the total pages
+      if (startPage === 1) {
+        endPage = Math.min(totalPages, maxPageButtons);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+    }
+    return pageNumbers;
   };
 
   return (
@@ -143,7 +159,6 @@ const PujaList = () => {
             className={`category-button ${selectedCategory === category ? "active" : ""}`}
             onClick={() => {
               setSelectedCategory(category);
-              setCurrentPage(1);
             }}
           >
             {category}
@@ -159,7 +174,6 @@ const PujaList = () => {
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              setCurrentPage(1);
             }}
             className="search-input"
           />
@@ -169,7 +183,7 @@ const PujaList = () => {
             </button>
           )}
         </div>
-        <button className="search-button" onClick={() => setCurrentPage(1)}>
+        <button className="search-button" onClick={() => {}}>
           SEARCH
         </button>
       </div>
@@ -183,10 +197,10 @@ const PujaList = () => {
           ))
         ) : error ? (
           <p className="error-text">{error}</p>
-        ) : currentPujas.length === 0 ? (
+        ) : filteredPujas.length === 0 ? (
           <p>No pujas found.</p>
         ) : (
-          currentPujas.map((puja, idx) => {
+          filteredPujas.map((puja, idx) => {
             const imageUrl = getImageUrl(puja);
             const price = puja.amount || puja.original_cost || puja.cost || 0;
             return (
@@ -231,20 +245,28 @@ const PujaList = () => {
         )}
       </div>
 
-      <div className="pagination">
-        <button onClick={handlePrev} disabled={currentPage === 1} className="page-btn">
+      <div className="pagination-controls">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="pagination-button pagination-nav-button"
+        >
           Prev
         </button>
-        {getPageNumbers().map((number) => (
+        {getPageNumbers().map((pageNumber) => (
           <button
-            key={number}
-            onClick={() => setCurrentPage(number)}
-            className={`page-btn ${currentPage === number ? "active" : ""}`}
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            className={`pagination-button ${currentPage === pageNumber ? "active" : ""}`}
           >
-            {number}
+            {pageNumber}
           </button>
         ))}
-        <button onClick={handleNext} disabled={currentPage === totalPages} className="page-btn">
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="pagination-button pagination-nav-button"
+        >
           Next
         </button>
       </div>
