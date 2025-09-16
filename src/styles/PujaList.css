@@ -114,7 +114,7 @@
   overflow: hidden;
   width: 100%;
   max-width: 400px;
-  height: 500px;
+  height: 550px;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
@@ -251,8 +251,8 @@
 }
 
 .pagination-nav-button {
-  width: 60px; /* Adjust as needed */
-  padding: 8px 5px; /* Adjust padding to make it narrower */
+  width: 60px; 
+  padding: 8px 5px; 
   font-size: 12px;
 }
 
