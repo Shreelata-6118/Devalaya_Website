@@ -16,7 +16,7 @@ const EventsPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await api.get('/api/v1/devotee/event/');
+        const response = await api.get('/api/v1/devotee/event/?page=1&size=16');
         const eventList = response.data?.results || [];
         setEvents(eventList);
         setFilteredEvents(eventList);
@@ -24,46 +24,6 @@ const EventsPage = () => {
       } catch (err) {
         console.error('API Error:', err);
         setError('Failed to load events list');
-        const mockEvents = [
-          {
-            id: 1,
-            name: 'Diwali Celebration',
-            details: 'Grand Diwali celebration with special pujas and festivities',
-            start: '2024-11-12T18:00:00',
-            end: '2024-11-12T22:00:00',
-            temple: { 
-              name: 'Sri Krishna Temple',
-              images: [{ image: 'https://via.placeholder.com/300x200?text=Diwali+Event' }]
-            },
-            category: 'Festival'
-          },
-          {
-            id: 2,
-            name: 'Navratri Festival',
-            details: 'Nine days of devotional celebration with dance and music',
-            start: '2024-10-15T18:00:00',
-            end: '2024-10-24T22:00:00',
-            temple: { 
-              name: 'Durga Mata Temple',
-              images: [{ image: 'https://via.placeholder.com/300x200?text=Navratri+Event' }]
-            },
-            category: 'Festival'
-          },
-          {
-            id: 3,
-            name: 'Ganesh Chaturthi',
-            details: 'Celebration of Lord Ganesha with special prayers and offerings',
-            start: '2024-09-07T18:00:00',
-            end: '2024-09-07T22:00:00',
-            temple: { 
-              name: 'Ganesh Temple',
-              images: [{ image: 'https://via.placeholder.com/300x200?text=Ganesh+Event' }]
-            },
-            category: 'Festival'
-          }
-        ];
-        setEvents(mockEvents);
-        setFilteredEvents(mockEvents);
       } finally {
         setLoading(false);
       }
@@ -71,6 +31,21 @@ const EventsPage = () => {
 
     setTimeout(fetchEvents, 100);
   }, []);
+
+  useEffect(() => {
+    let filtered = events;
+
+    if (searchTerm) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      filtered = filtered.filter((event) =>
+        event.name?.toLowerCase().includes(lowercasedSearchTerm) ||
+        event.details?.toLowerCase().includes(lowercasedSearchTerm) ||
+        event.temple?.name?.toLowerCase().includes(lowercasedSearchTerm)
+      );
+    }
+
+    setFilteredEvents(filtered);
+  }, [events, searchTerm]);
 
   const getImageUrl = (event) => {
     if (event.temple?.images && event.temple.images.length > 0) {
@@ -85,14 +60,10 @@ const EventsPage = () => {
   };
 
   const handleSearch = () => {
-    const filtered = events.filter((event) =>
-      event.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.details?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      event.temple?.name?.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredEvents(filtered);
+    // The useEffect hook now handles filtering, so this can be kept for explicit search button clicks if needed
+    // or left empty if we want filtering to be purely reactive
   };
-
+  
   const formatDateRange = (startDate, endDate) => {
     const start = moment(startDate);
     const end = moment(endDate);
@@ -125,12 +96,12 @@ const EventsPage = () => {
 
       <div className="events-cards">
         {loading ? (
-          [...Array(6)].map((_, index) => (
+          [...Array(8)].map((_, index) => (
             <div className="event-card skeleton" key={index}>
               <div className="event-image skeleton-img" />
-              <h3 className="skeleton-text">Loading...</h3>
-              <p className="skeleton-text">Fetching description...</p>
-              <p className="skeleton-text">Loading date...</p>
+              <h3>Loading...</h3>
+              <p>Fetching description...</p>
+              <p>Loading date...</p>
               <button className="view-button skeleton-button">Loading...</button>
             </div>
           ))
