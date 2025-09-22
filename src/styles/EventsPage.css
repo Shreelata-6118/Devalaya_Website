@@ -93,7 +93,7 @@
 
 /* === Event Card === */
 .event-card {
-  width: 277.5px;
+  width: 360px; /* Increased width for 3 cards per row */
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -236,6 +236,15 @@
 }
 
 /* === Responsive Design === */
+
+/* 2 cards per row on tablets */
+@media (max-width: 1199px) {
+  .event-card {
+    width: 350px;
+  }
+}
+
+/* 1 card per row on smaller tablets */
 @media (max-width: 768px) {
   .events-heading {
     font-size: 28px;
@@ -253,8 +262,8 @@
   }
 
   .event-card {
-    width: 369px;
-    min-height: 380px;
+    width: 90%;
+    max-width: 400px;
   }
 
   .event-content {
@@ -271,6 +280,7 @@
   }
 }
 
+/* 1 card per row on mobile */
 @media (max-width: 480px) {
   .events-list-container {
     padding: 15px;

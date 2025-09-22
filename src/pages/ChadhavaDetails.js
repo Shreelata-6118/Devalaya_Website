@@ -5,6 +5,7 @@ import api from "../api/api";
 import "../styles/ChadhavaDetails.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useUserAuth } from "../context/UserAuthContext";
+import OtpLoginModal from '../components/OtpLoginModal';
 
 // Load Razorpay
 const loadRazorpayScript = () => {
@@ -29,6 +30,7 @@ const ChadhavaDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showOtpLogin, setShowOtpLogin] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -211,10 +213,15 @@ const ChadhavaDetails = () => {
 
   const handleOfferChadhava = () => {
     if (!user) {
-      navigate("/login");
+      setShowOtpLogin(true);
     } else {
       handleAddToCart();
     }
+  };
+
+  const handleLoginSuccess = () => {
+    setShowOtpLogin(false);
+    handleAddToCart();
   };
 
   const handleCloseCheckout = () => {
@@ -605,6 +612,13 @@ const ChadhavaDetails = () => {
           <span className="arrow">→</span>
         </button>
       </div>
+
+      {showOtpLogin && (
+        <OtpLoginModal 
+            onClose={() => setShowOtpLogin(false)} 
+            onLoginSuccess={handleLoginSuccess} 
+        />
+      )}
 
       {/* Checkout Modal */}
       {showCheckout && (

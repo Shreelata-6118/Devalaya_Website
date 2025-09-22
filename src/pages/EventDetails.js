@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import '../styles/EventDetails.css';
-
+import OtpLoginModal from '../components/OtpLoginModal';
 import { useUserAuth } from "../context/UserAuthContext";
 
 const loadRazorpayScript = () => {
@@ -28,6 +28,7 @@ const EventDetails = () => {
   const [selectedPooja, setSelectedPooja] = useState(null);
 
   const [showCheckout, setShowCheckout] = useState(false);
+  const [showOtpLogin, setShowOtpLogin] = useState(false);
   const [orderDetails, setOrderDetails] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -104,10 +105,16 @@ const EventDetails = () => {
 
   const handleParticipate = (pooja) => {
     if (!user) {
-      navigate("/login");
-      return;
+        setSelectedPooja(pooja);
+        setShowOtpLogin(true);
+    } else {
+      setSelectedPooja(pooja);
+      setShowCheckout(true);
     }
-    setSelectedPooja(pooja);
+  };
+
+  const handleLoginSuccess = () => {
+    setShowOtpLogin(false);
     setShowCheckout(true);
   };
 
@@ -149,7 +156,7 @@ const EventDetails = () => {
       const payload = {
         requests: [
           {
-            is_chadhava: false,
+            
             is_prasadam_delivery: true,
             pooja: selectedPooja.id,
             temple: event.temple.id,
@@ -429,6 +436,13 @@ const EventDetails = () => {
           </div>
         </div>
       </div>
+
+      {showOtpLogin && (
+        <OtpLoginModal 
+            onClose={() => setShowOtpLogin(false)} 
+            onLoginSuccess={handleLoginSuccess} 
+        />
+      )}
 
       {showCheckout && (
         <div className="chadhava-checkout-overlay" onClick={handleCloseCheckout}>
