@@ -81,9 +81,8 @@
 
 /* === Events Grid === */
 .events-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
   margin-top: 20px;
   max-width: 1200px;
@@ -93,7 +92,6 @@
 
 /* === Event Card === */
 .event-card {
-  width: 360px; /* Increased width for 3 cards per row */
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -135,7 +133,7 @@
 /* Image */
 .event-image {
   width: 100%;
-  aspect-ratio: 800 / 450;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-bottom: 1px solid #eee;
 }
@@ -237,78 +235,7 @@
 
 /* === Responsive Design === */
 
-/* 2 cards per row on tablets */
-@media (max-width: 1199px) {
-  .event-card {
-    width: 350px;
-  }
-}
 
-/* 1 card per row on smaller tablets */
-@media (max-width: 768px) {
-  .events-heading {
-    font-size: 28px;
-    margin-bottom: 15px;
-  }
-
-  .search-input {
-    width: 70%;
-    font-size: 14px;
-  }
-
-  .search-button {
-    width: 80px;
-    font-size: 12px;
-  }
-
-  .event-card {
-    width: 90%;
-    max-width: 400px;
-  }
-
-  .event-content {
-    padding: 15px;
-  }
-
-  .event-card h3 {
-    font-size: 18px;
-  }
-
-  .event-top-label {
-    font-size: 11px;
-    padding: 5px 9px;
-  }
-}
-
-/* 1 card per row on mobile */
-@media (max-width: 480px) {
-  .events-list-container {
-    padding: 15px;
-  }
-
-  .events-heading {
-    font-size: 24px;
-  }
-
-  .search-box {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .search-input {
-    width: 90%;
-    margin-bottom: 10px;
-  }
-
-  .search-button {
-    width: 90%;
-    margin-left: 0;
-  }
-
-  .event-card {
-    width: 100%;
-  }
-}
 
 @keyframes blink {
   0% { color: white; }

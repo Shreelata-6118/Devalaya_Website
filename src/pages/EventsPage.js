@@ -16,7 +16,7 @@ const EventsPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await api.get('/api/v1/devotee/event/?page=1&size=16');
+        const response = await api.get('/api/v1/devotee/event/?page=1&size=27');
         const eventList = response.data?.results || [];
         setEvents(eventList);
         setFilteredEvents(eventList);
@@ -48,6 +48,13 @@ const EventsPage = () => {
   }, [events, searchTerm]);
 
   const getImageUrl = (event) => {
+    if (event.id === 217) {
+      return "https://devalaya-bucket-production.s3.amazonaws.com/temple_images/1380/shrimahalaxmi_iD5doqG.webp";
+    }
+    if (event.image && event.image.trim() !== '') {
+      const imagePath = event.image;
+      return imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`;
+    }
     if (event.temple?.images && event.temple.images.length > 0) {
       const imagePath = event.temple.images[0].image;
       return imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`;
