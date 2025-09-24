@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import EventBannerCarousel from '../components/EventBannerCarousel';
 
 // import bannerImage from '../assets/banner.png'; // Phone image
 
@@ -29,16 +30,17 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="homepage">
-      {/* Small Screen Navigation Buttons */}
-      {/* <ButtonSmScreen /> */}
-      {/* ======= Temple List Section ======= */}
-      <div className="temple-list-section">
-        <div className="homepage-content">
-          <TempleList />
+      <div className="homepage">
+        <EventBannerCarousel />
+        {/* Small Screen Navigation Buttons */}
+        {/* <ButtonSmScreen /> */}
+        {/* ======= Temple List Section ======= */}
+        <div className="temple-list-section">
+          <div className="homepage-content">
+            <TempleList />
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
