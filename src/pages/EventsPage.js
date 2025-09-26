@@ -48,15 +48,8 @@ const EventsPage = () => {
   }, [events, searchTerm]);
 
   const getImageUrl = (event) => {
-    if (event.id === 217) {
-      return "https://devalaya-bucket-production.s3.amazonaws.com/temple_images/1380/shrimahalaxmi_iD5doqG.webp";
-    }
-    if (event.image && event.image.trim() !== '') {
-      const imagePath = event.image;
-      return imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`;
-    }
-    if (event.temple?.images && event.temple.images.length > 0) {
-      const imagePath = event.temple.images[0].image;
+    const imagePath = event.image && event.image.trim();
+    if (imagePath) {
       return imagePath.startsWith('http') ? imagePath : `${BASE_URL}${imagePath}`;
     }
     return 'https://via.placeholder.com/300x200?text=Event+Image';
