@@ -83,32 +83,30 @@ const Chadhava = () => {
                     className="chadhava-image"
                   />
 
-                  <h3 className="chadhava-name">{item.name}</h3>
-                  {/* <p className="chadhava-description">{item.details}</p> */}
-                  <p className="chadhava-temple">
-                    <strong>Temple: </strong> {item.temple?.name}
-                  </p>
-                  {/* Included and Excluded details */}
-                  {(item.included || item.pooja_chadhava?.included) && (
-                    <p className="chadhava-included">
-                      <strong>Chadhava items: </strong>{item.included || item.pooja_chadhava?.included}
+                  <div className="chadhava-content">
+                    <h3 className="chadhava-name">{item.name}</h3>
+                    {/* <p className="chadhava-description">{item.details}</p> */}
+                    <p className="chadhava-temple">
+                      <strong>Temple: </strong> {item.temple?.name}
                     </p>
-                  )}
-                  {(item.excluded || item.pooja_chadhava?.excluded) && (
-                    <p className="chadhava-excluded">
-                      <strong>Benefits: </strong> {item.excluded || item.pooja_chadhava?.excluded}
-                    </p>
-                  )}
-
-
-                  
-
-                  <button
-                    className="chadhava-btn-o"
-                    onClick={() => handleOfferNow(item)}
-                  >
-                    Offer Now
-                  </button>
+                    {/* Included and Excluded details */}
+                    {(item.included || item.pooja_chadhava?.included) && (
+                      <p className="chadhava-included">
+                        <strong>Chadhava items: </strong>{item.included || item.pooja_chadhava?.included}
+                      </p>
+                    )}
+                    {(item.excluded || item.pooja_chadhava?.excluded) && (
+                      <p className="chadhava-excluded">
+                        <strong>Benefits: </strong> {item.excluded || item.pooja_chadhava?.excluded}
+                      </p>
+                    )}
+                    <button
+                      className="view-button"
+                      onClick={() => handleOfferNow(item)}
+                    >
+                      Offer Now
+                    </button>
+                  </div>
                 </div>
               );
             })
