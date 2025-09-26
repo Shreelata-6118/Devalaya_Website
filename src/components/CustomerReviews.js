@@ -235,7 +235,7 @@ const reviews = [
   { name: "Rohit john",
      place: "Bangalore", 
      review: "Booking a puja through Devalaya was so simple. The live streaming gave me the feeling of being inside the temple. Receiving prasadam at home made the whole experience complete.", 
-     image: "/images/1.jpg" },
+     image: "/images/1.webp" },
   { name: "Priya Nair",
      place: "Kochi", 
      review: "My father couldn’t travel due to health issues, but Devalaya made it possible to offer puja from home. The chadhava process was smooth, and we felt truly connected to the divine.", 
