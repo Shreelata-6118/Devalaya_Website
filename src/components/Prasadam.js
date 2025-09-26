@@ -169,59 +169,48 @@ const Prasadam = () => {
 
           return (
             <div key={prasadam.id} className="prasadam-card">
-              <div className="prasadam-top-label">Prasadam</div>
+              <div className="event-top-label">Prasadam</div>
 
-              {mediaUrl && (
-                <div className="prasadam-image-wrapper">
-                  {/\.mp4$|\.webm$|\.ogg$/i.test(mediaUrl) ? (
-                    <video
-                      src={mediaUrl}
-                      className="prasadam-video"
-                      controls
-                      autoPlay
-                      muted
-                    >
-                      Your browser does not support video tag.
-                    </video>
-                  ) : (
-                    <img
-                      src={mediaUrl}
-                      alt={prasadam.name}
-                      className="prasadam-image"
-                      onError={(e) => {
-                        e.target.style.display = "none";
-                      }}
-                    />
-                  )}
-                </div>
-              )}
+              {mediaUrl &&
+                (/\.mp4$|\.webm$|\.ogg$/i.test(mediaUrl) ? (
+                  <video
+                    src={mediaUrl}
+                    className="prasadam-video"
+                    controls
+                    autoPlay
+                    muted
+                  >
+                    Your browser does not support video tag.
+                  </video>
+                ) : (
+                  <img
+                    src={mediaUrl}
+                    alt={prasadam.name}
+                    className="event-image"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                    }}
+                  />
+                ))}
 
-              <h4 className="prasadam-title">
-                🌸 {prasadam.name || poojaPrasadam.name || "Prasadam"}
-              </h4>
-
-              <div className="prasadam-card-content">
+              <div className="event-content">
+                <h3>
+                  🌸 {prasadam.name || poojaPrasadam.name || "Prasadam"}
+                </h3>
                 <p>
-                  <span className="prasadam-label">Details:</span>{" "}
+                  <span style={{ color: "#ff6600", fontWeight: "bold" }}>Details:</span>{" "}
                   {prasadam.details || poojaPrasadam.details || "N/A"}
                 </p>
-                <p>
-                  <span className="prasadam-label">Include's:</span> {includes}
-                </p>
-                <p>
-                  <span className="prasadam-label">Benefits:</span> {benefits}
-                </p>
-                <p>
-                  <span className="prasadam-label">Cost:</span> {costDisplay}
-                </p>
+                <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Include's:</span> {includes}</p>
+                <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Benefits:</span> {benefits}</p>
+                <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Cost:</span> {costDisplay}</p>
+                <button
+                  className="view-button"
+                  onClick={() => addToCart(prasadam)}
+                >
+                  Book ➜
+                </button>
               </div>
-
-              <button
-                className="prasadam-book-btn"
-                onClick={() => addToCart(prasadam)}
-              >
-                Book ➜
-              </button>
             </div>
           );
         })}

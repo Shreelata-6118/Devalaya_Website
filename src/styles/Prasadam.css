@@ -1,6 +1,6 @@
-body {
+/* body {
   background-color: #ffe5d0;
-}
+} */
 
 .prasadam-page {
   display: flex;
@@ -72,33 +72,50 @@ body {
 
 
 .prasadam-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 30px;
-  padding: 40px 20px;
+  margin-top: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .prasadam-card {
-  background: white;
+  background: #fff;
   border-radius: 12px;
-  padding: 20px;
-  width: 300px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  min-height: 400px;
+  position: relative; /* Required for label positioning */
 }
 
-.prasadam-top-label {
+.prasadam-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.event-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  text-align: left;
+  justify-content: space-between;
+}
+
+.event-top-label {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  background-color: #f25c05;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #ff9800, #f57c00); /* Warm orange gradient */
   color: white;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 600;
   padding: 6px 10px;
   border-radius: 6px;
   z-index: 2;
@@ -106,66 +123,52 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  animation: blink 1s infinite;
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  animation: blink-and-flash 1.5s infinite;
 }
 
-.prasadam-title {
-  color: #000;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 15px;
-  text-align: center;
+.prasadam-card h3 {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  color: #333;
+  font-weight: bold;
+  line-height: 1.3;
 }
 
-.prasadam-image-wrapper {
-  border: 2px solid orange;
-  /* padding: 5px; */
-  border-radius: 10px;
-  margin-bottom: 15px;
-  background: #fff9f0;
-}
-
-.prasadam-image,
+.event-image,
 .prasadam-video {
   width: 100%;
-  aspect-ratio: 800 / 450;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 8px;
+  border-bottom: 1px solid #eee;
 }
 
-.prasadam-card-content {
-  width: 100%;
-  flex-grow: 1;
-}
-
-.prasadam-card-content p {
+.event-content p {
   font-size: 14px;
   line-height: 1.5;
   color: #333;
   margin: 10px 0;
 }
 
-.prasadam-label {
-  color: #f25c05;
-  font-weight: 600;
-}
-
-.prasadam-book-btn {
-  margin-top: 20px;
-  background-color: #ff6600;
+.view-button {
+  margin-top: auto;
+  background-color:#ff6600;
   color: white;
-  padding: 10px 0;
-  width: 100%;
-  font-size: 16px;
-  font-weight: 600;
   border: none;
-  border-radius: 25px;
+  padding: 12px 20px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease;
 }
 
-.prasadam-book-btn:hover {
-  background-color: #cc5200;
+.view-button:hover {
+  background-color: #d32f2f;
 }
 
 @media (max-width: 600px) {
@@ -174,15 +177,16 @@ body {
   }
 }
 
-@keyframes blink {
-  0% {
+@keyframes blink-and-flash {
+  0%, 100% {
+    opacity: 1;
     color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
   }
   50% {
-    color: transparent;
-  }
-  100% {
-    color: white;
+    opacity: 0.5;
+    color: #ffddaa;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1);
   }
 }
 
