@@ -1,934 +1,232 @@
-/* src/styles/EventDetails.css */
-
 :root {
-  --primary-color: #d9534f;
-  --primary-hover-color: #c9302c;
-  --secondary-color: #f4f4f4;
+  --primary-color: #ff6600;
   --text-color: #333;
   --text-light-color: #666;
-  --border-color: #ddd;
   --card-bg-color: #fff;
-  --body-bg-color: #f8f9fa;
-  /* --font-family: 'Roboto', sans-serif; */
+  --body-bg-color: #f9f9f9;
+  --border-color: #eee;
 }
 
-  .event-details-container {
-  padding: 20px;
+.event-details-container {
   max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background-color: var(--body-bg-color);
-  /* font-family: var(--font-family); */
-  gap: 30px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.event-details-header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.event-details-loading-container,
+.event-details-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 1.2rem;
+  color: var(--text-light-color);
 }
 
 .event-details-card {
   background: var(--card-bg-color);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding-top: 10px; /* Space for the overlapping banner */
-  position: relative;
- /* Overlap with the banner */
-  z-index: 1;
-}
-
-.event-content-section {
-  padding: 20px 40px 40px;
-  /* background-color: rgba(255, 165, 0, 0.1); */
-}
-
-.event-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-top: 20px;
-}
-
-.event-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0 0 10px;
-}
-
-.temple-info-header {
-  font-size: 1.1rem;
-  color: var(--text-light-color);
-}
-
-.temple-info-header .info-label {
-  font-weight: 600;
-  display: inline;
-}
-
-.event-details-body {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
-  margin-top: 30px;
-}
-
-.event-info-main {
-  background-color: #f9f9f9;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.info-section {
-  margin-bottom: 15px;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.info-label {
-  display: block;
-  font-weight: 700;
-  color: var(--text-color);
-  font-size: 1rem;
-  flex-shrink: 0;
-  min-width: 80px;
-}
-
-.info-value {
-  color: var(--text-light-color);
-  line-height: 1.6;
-  flex-grow: 1;
-}
-
-.info-value strong {
-  color: var(--text-color);
-}
-
-.event-actions-section {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 25px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.cost-info {
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.cost-info .info-label {
-  display: inline;
-  margin-right: 0;
-  font-size: 1.2rem;
-}
-
-.cost-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-}
-
-.participate-button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(217, 83, 79, 0.3);
-  width: 100%;
-  max-width: 300px;
-}
-
-.participate-button:hover:not(:disabled) {
-  background-color: var(--primary-hover-color);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(217, 83, 79, 0.4);
-}
-
-.participate-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.expired-message {
-  color: var(--primary-color);
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 15px;
-  background-color: #f8d7da;
-  border-radius: 8px;
-  border: 1px solid #f5c6cb;
-  width: 100%;
-  max-width: 300px;
-  text-align: center;
-}
-
-/* Packages Section */
-.packages-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 1px solid var(--border-color);
-}
-
-.packages-title {
-  text-align: center;
-  color: var(--text-color);
-  font-size: 2rem;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
-.packages-container h2 {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: var(--text-color);
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-.package-card {
-  background: var(--card-bg-color);
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  padding: 25px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.package-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.package-card h3 {
-  font-size: 1.5rem;
-  color: var(--text-color);
-  margin-bottom: 15px;
-}
-
-.package-card .price {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-}
-
-.package-card .select-button {
-  background-color: #f44336; /* Green for select */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  max-width: 200px;
-}
-
-.package-card .select-button:hover {
-  background-color: #ff6600;
-}
-
-/* Checkout Modal */
-.chadhava-checkout-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(5px);
-}
-
-.chadhava-checkout-modal {
-  background: var(--card-bg-color);
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  width: 90%;
-  max-width: 900px;
-  max-height: 70vh;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-}
-
-.chadhava-checkout-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 30px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--secondary-color);
-}
-
-.chadhava-checkout-header h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--text-color);
-}
-
-.chadhava-checkout-header .close-btn {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  color: var(--text-light-color);
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.chadhava-checkout-header .close-btn:hover {
-  color: var(--primary-color);
-}
-
-.chadhava-checkout-body {
-  display: flex;
-  flex-grow: 1;
-  overflow: hidden;
-}
-
-.checkout-form {
-  flex: 2;
-  padding: 30px;
-  overflow-y: auto;
-}
-
-.checkout-form form {
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
-.form-scrollable-area {
-  flex-grow: 1;
-  padding-right: 15px; /* For scrollbar */
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.form-group input[type="text"],
-.form-group input[type="date"],
-.form-group input[type="tel"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1rem;
-  color: var(--text-color);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-group input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.2);
-  outline: none;
-}
-
-.form-group .error {
-  color: var(--primary-color);
-  font-size: 0.85rem;
-  margin-top: 5px;
-  display: block;
-}
-
-.required-star {
-  color: var(--primary-color);
-  margin-left: 4px;
-}
-
-.form-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.form-row .form-group {
-  flex: 1;
-  margin-bottom: 0;
-}
-
-.checkout-form h5 {
-  color: var(--primary-color);
-  margin-top: 30px;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 10px;
-}
-
-.pay-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.pay-btn:hover:not(:disabled) {
-  background-color: var(--primary-hover-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(217, 83, 79, 0.3);
-}
-
-.pay-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.checkout-summary {
-  flex: 1;
-  background-color: #f8f9fa;
-  padding: 30px;
-  border-left: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-
-.chadhava-item-summary h4 {
-  color: var(--text-color);
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 10px;
-}
-
-.chadhava-item-summary p {
-  font-size: 1.1rem;
-  color: var(--text-light-color);
-  margin: 0;
-}
-
-/* Confirmation Screen */
-.confirmation-body {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  padding: 30px;
-}
-
-.confirmation-address {
-  flex: 1;
-}
-
-.price-summary-container {
-  flex: 1;
-}
-
-.price-summary .price-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: var(--text-light-color);
-}
-
-.price-summary .price-row span:first-child {
-  font-weight: 500;
-}
-
-.price-summary .price-row.total {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  border-top: 1px dashed var(--border-color);
-  padding-top: 15px;
-  margin-top: 15px;
-}
-
-.chadhava-checkout-footer {
-  padding: 20px 30px;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--secondary-color);
-  text-align: right;
-}
-
-.chadhava-checkout-footer .pay-btn {
-  margin-top: 0;
-  max-width: 250px;
-  display: inline-block;
-}
-
-/* Error and Loading states */
-.error-message, .loading-skeleton {
-  text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.error-message h2 {
-  color: var(--primary-color);
-  margin-bottom: 15px;
-}
-
-.back-button {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
-}
-
-.back-button:hover {
-  background-color: #5a6268;
-}
-
-.loading-skeleton {
-  display: block;
-}
-
-.skeleton-image {
-  height: 350px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 16px;
-  margin-bottom: 20px;
-}
-
-.skeleton-content {
-  padding: 20px;
-}
-
-.skeleton-title, .skeleton-text, .skeleton-button {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 4px;
-  margin-bottom: 15px;
-}
-
-.skeleton-title { height: 38px; width: 70%; margin: 0 auto 20px; }
-.skeleton-text { height: 20px; }
-.skeleton-button { height: 50px; width: 100%; border-radius: 8px; }
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Responsive Design */
 @media (min-width: 768px) {
-  .event-actions-section {
-    position: sticky;
-    top: 20px;
-  }
-}
-
-@media (max-width: 767px) {
-  .event-banner {
-    height: 250px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-  }
-
   .event-details-card {
-    padding-top: 20px;
-    border-radius: 12px;
-    margin-top: -60px;
-  }
-
-  .event-content-section {
-    padding: 20px;
-  }
-
-  .event-title {
-    font-size: 2rem;
-  }
-
-  .chadhava-checkout-body {
-    flex-direction: column;
-  }
-
-  .checkout-summary {
-    border-left: none;
-    border-top: 1px solid var(--border-color);
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .form-row .form-group {
-    margin-bottom: 20px;
+    flex-direction: row;
   }
 }
 
-@media (max-width: 480px) {
-  .event-details-container {
-    padding: 15px;
-  }
+.event-details-media {
+  width: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
 
-  .event-banner {
-    height: 180px;
-    margin-bottom: 15px;
-  }
-
-  .event-details-card {
-    padding-top: 15px;
-    margin-top: -40px;
-  }
-
-  .event-content-section {
-    padding: 15px;
-  }
-
-  .event-title {
-    font-size: 1.8rem;
-  }
-
-  .participate-button {
-    padding: 12px 20px;
-    font-size: 0.9rem;
-    width: 100%;
-  }
-
-  .cost-value {
-    font-size: 1.5rem;
-  }
-
-  .chadhava-checkout-header h3 {
-    font-size: 1.2rem;
-  }
-
-  .chadhava-checkout-header .close-btn {
-    font-size: 1.5rem;
-  }
-
-  .checkout-form, .checkout-summary {
-    padding: 20px;
-  }
-
-  .pay-btn {
-    font-size: 1rem;
-    padding: 12px 20px;
-  }
-
-  .packages-container {
-    grid-template-columns: 1fr;
+@media (min-width: 768px) {
+  .event-details-media {
+    width: 50%;
   }
 }
 
-.event-banner {
-  height: 300px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 16px;
-  margin-bottom: 20px; /* Overlap with the card */
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+.event-details-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.event-banner-video {
+.event-details-media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: inherit;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.event-details-card {
-  /* background: var(--card-bg-color); */
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding-top: 1px; /* Space for the overlapping banner */
-  position: relative;
+.event-details-content {
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.event-content-section {
-  padding: 20px 40px 40px;
-  background-color: rgba(255, 165, 0, 0.1);
-  border-radius: 10px;
+@media (min-width: 768px) {
+  .event-details-content {
+    width: 50%;
+  }
 }
 
-.event-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.event-title {
+.event-details-title {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--text-color);
-  margin: 0 0 10px;
-}
-
-.temple-info-header {
-  font-size: 1.1rem;
-  color: var(--text-light-color);
-}
-
-.temple-info-header .info-label {
-  font-weight: 600;
-  display: inline;
-}
-
-.event-details-body {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px;
-}
-
-.info-section {
-  margin-bottom: 20px;
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-}
-
-.info-label {
-  display: block;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 8px;
-  font-size: 1rem;
-}
-
-.info-section .info-label {
-  flex-shrink: 0;
-}
-
-.info-value {
-  /* color: var(--text-light-color); */
-  line-height: 1.6;
-}
-
-
-
-.event-actions-section {
-  background-color: var(--secondary-color);
-  border-radius: 12px;
-  padding: 20px;
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
   text-align: center;
 }
 
-.cost-info {
-  margin-bottom: 20px;
+.event-details-temple-name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  text-align: center;
 }
 
-.cost-info .info-label {
-  display: inline;
-  margin-right: 10px;
+.event-details-date {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-light-color);
+  text-align: center;
+  margin: 0;
 }
 
-.cost-value {
-  font-size: 1.8rem;
+.event-details-section {
+  margin-bottom: 1.5rem;
+}
+
+.event-details-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+.event-details-section p {
+  color: var(--text-light-color);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.event-details-cost-section {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.event-details-cost-section p {
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary-color);
+  margin: 0;
 }
 
-.participate-button {
+.event-details-participate-button {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 1rem 2rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(217, 83, 79, 0.3);
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
 }
 
-.participate-button:hover:not(:disabled) {
-  background-color: var(--primary-hover-color);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(217, 83, 79, 0.4);
+.event-details-participate-button:hover {
+  background-color: #e65c00;
 }
 
-.participate-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.expired-message {
-  color: var(--primary-color);
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 15px;
-  background-color: #f8d7da;
-  border-radius: 8px;
-  border: 1px solid #f5c6cb;
-}
-
-/* Error and Loading states */
-.error-message, .loading-skeleton {
+.event-details-back-button-container {
   text-align: center;
-  padding: 60px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
 }
 
-.error-message h2 {
-  color: var(--primary-color);
-  margin-bottom: 15px;
-}
-
-.back-button {
-  background-color: #6c757d;
+.event-details-back-button {
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 500;
   transition: background-color 0.3s ease;
 }
 
-.back-button:hover {
-  background-color: #5a6268;
-}
-
-.loading-skeleton {
-  display: block;
-}
-
-.skeleton-image {
-  height: 350px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 16px;
-  margin-bottom: 20px;
-}
-
-.skeleton-content {
-  padding: 20px;
-}
-
-.skeleton-title, .skeleton-text, .skeleton-button {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 4px;
-  margin-bottom: 15px;
-}
-
-.skeleton-title { height: 38px; width: 70%; margin: 0 auto 20px; }
-.skeleton-text { height: 20px; }
-.skeleton-button { height: 50px; width: 100%; border-radius: 8px; }
-
-@keyframes loading {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* Responsive Design */
-@media (min-width: 768px) {
-  .event-actions-section {
-    position: sticky;
-    top: 20px;
-  }
-}
-
 @media (max-width: 767px) {
-  .event-banner {
-    height: 250px;
-    margin-bottom: 20px;
-    border-radius: 12px;
-  }
-
-  .event-details-card {
-    padding-top: 20px;
-    border-radius: 12px;
-  }
-
-  .event-content-section {
-    padding: 20px;
-  }
-
-  .event-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
   .event-details-container {
-    padding: 15px;
+    padding: 0.5rem;
   }
-
-  
-
-  .event-banner {
-    height: 80px;
-    margin-bottom: 20px;
-  }
-
   .event-details-card {
-    padding-top: 20px;
-    margin-top: 0;
+    flex-direction: column;
+    overflow: visible;
+    border-radius: 1rem;
   }
 
-  .event-content-section {
-    padding: 15px;
+  .event-details-media img {
+    border-radius: 10px;
   }
 
-  .event-actions-section {
-    padding: 10px;
-    margin-bottom: 60px;
-  }
-
-  .event-title {
-    font-size: 1.5rem;
-  }
-
-  .participate-button {
-    padding: 12px 20px;
-    font-size: 0.9rem;
+  .event-details-media,
+  .event-details-content {
     width: 100%;
   }
 
-  .cost-value {
+  .event-details-content {
+    padding: 1rem;
+  }
+
+  .event-details-header {
+    margin-top: 1rem;
+  }
+
+  .event-details-title {
     font-size: 1.5rem;
   }
+
+  .event-details-temple-name {
+    font-size: 1rem;
+  }
+
+  .event-details-date {
+    font-size: 0.9rem;
+  }
+
+  .event-details-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .event-details-cost-section p {
+    font-size: 1.2rem;
+  }
+
+  .event-details-participate-button {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+.event-details-back-button:hover {
+  background-color: #e65c00;
 }
