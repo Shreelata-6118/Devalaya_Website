@@ -31,7 +31,7 @@ const HomePage = () => {
 
   return (
       <div className="homepage">
-        <EventBannerCarousel />
+        {/* <EventBannerCarousel /> */}
         {/* Small Screen Navigation Buttons */}
         {/* <ButtonSmScreen /> */}
         {/* ======= Temple List Section ======= */}
