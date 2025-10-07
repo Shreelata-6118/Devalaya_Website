@@ -127,6 +127,7 @@ const Prasadam = () => {
       {/* 🔍 Search Bar */}
       <div className="prasadam-search-bar">
         <div className="prasadam-search-input-wrapper">
+          <span className="prasadam-search-icon">🔍</span>
           <input
             type="text"
             placeholder="Search by prasadam or temples..."
