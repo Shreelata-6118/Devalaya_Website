@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import EventBannerCarousel from '../components/EventBannerCarousel';
 
-// import bannerImage from '../assets/banner.png'; // Phone image
-
 import '../styles/HomePage.css';
 import '../styles/CardSection.css'; // Keep if you have card-specific styles
 
