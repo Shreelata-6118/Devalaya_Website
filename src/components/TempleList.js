@@ -4,6 +4,7 @@ import { fetchTemples, setSearch } from '../redux/templeSlice';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TempleList.css';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import api from '../api/api';
 
 const SkeletonCard = () => (
   <div className="temple-list-card skeleton">
@@ -17,6 +18,23 @@ const SkeletonCard = () => (
 const TempleList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await api.get('/api/v1/devotee/event/?page=1&size=2');
+        const data = response?.data;
+        if (data?.results) {
+          setEvents(data.results);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error.response?.data || error.message);
+      }
+    };
+    fetchEvents();
+  }, []);
 
   const {
     temples = [],
@@ -54,8 +72,19 @@ const TempleList = () => {
     return 'https://via.placeholder.com/300x200?text=No+Image';
   };
 
+  const getEventImageUrl = (event) => {
+    if (event && event.image) {
+      const imageUrl = event.image;
+      if (imageUrl && imageUrl !== 'null') {
+        return imageUrl.startsWith('http') ? imageUrl : `${BASE_URL}${imageUrl}`;
+      }
+    }
+    return 'https://via.placeholder.com/300x200?text=No+Image'; // Fallback image
+  };
+
   return (
     <div className="temple-list-container">
+      <style dangerouslySetInnerHTML={{__html: `@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } } @media (max-width: 768px) { .event-container { flex-direction: column; gap: 1rem; } .event-img-second { display: none; } .event-img-first { width: 100%; text-align: center; } .explore-title { order: 2; } .search-bar { order: 3; } }`}} />
 
       {/* 🔔 Important Notice */}
       <div className="notice-bar">
@@ -64,36 +93,91 @@ const TempleList = () => {
           ⚠ ಪ್ರಮುಖ ಸೂಚನೆ: www.devalayas.com ಮತ್ತು csc.devalayas.com ಮಾತ್ರ ಅಧಿಕೃತವಾಗಿ ಅಧಿಕೃತವಾದ ಆನ್‌ಲೈನ್ ದೇವಾಲಯ ಸೇವೆಗಳಾದ ಪೂಜೆ ಬುಕಿಂಗ್ ಮತ್ತು ಪ್ರಸಾದ ವಿತರಣೆಗೆ ವೇದಿಕೆಗಳಾಗಿದ್ದು, ಇದನ್ನು ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಮತ್ತು ಆಯಾ ದೇವಾಲಯ ಅಧಿಕಾರಿಗಳು CSC ಇ-ಗವರ್ನೆನ್ಸ್ ಸಹಯೋಗದೊಂದಿಗೆ ಅಧಿಕೃತಗೊಳಿಸಿದ್ದಾರೆ. ಯಾವುದೇ ಸಂದೇಹಗಳಿದ್ದರೆ, ನಮ್ಮ ಅಧಿಕೃತ ಬೆಂಬಲ ತಂಡವನ್ನು ಸಂಪರ್ಕಿಸುವ ಮೂಲಕ ದೃಢೀಕರಣವನ್ನು ಪರಿಶೀಲಿಸಿ. ನಂಬಿಕೆಯೊಂದಿಗೆ ಬುಕ್ ಮಾಡಿ. ಭಕ್ತಿಯಿಂದ ಸೇವೆ ಮಾಡಿ.
         </div>
       </div>
-
-      <h1 className="temple-list-title">EXPLORE MORE TEMPLES</h1>
-
-      {/* Search Bar */}
-      <div className="temple-list-search">
-        <div className="temple-list-search-wrapper">
-          <input
-            type="text"
-            className="temple-list-search-input"
-            placeholder="Search Temples..."
-            value={search}
-            onChange={(e) => dispatch(setSearch(e.target.value))}
-          />
-          {search && (
-            <button
-              className="temple-list-clear-btn"
-              onClick={() => dispatch(setSearch(''))}
-            >
-              ✖
-            </button>
+      <div className="event-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '20px', width: '100%', flexWrap: 'nowrap' }}>
+        <div className="event-img-first" style={{ flex: '3 0 0%', position: 'relative' }}>
+          {events.length > 0 && (
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <img
+                src={getEventImageUrl(events[0])}
+                alt={events[0]?.title || 'Event 1'}
+                onClick={() => navigate('/events')}
+                style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
+              />
+              <div style={{
+                position: 'absolute',
+                top: '10px',
+                left: '10px',
+                backgroundColor: '#ff5722',
+                color: 'white',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                zIndex: 1,
+                animation: 'blink 1s infinite'
+              }}>
+                On Going Event
+              </div>
+            </div>
           )}
         </div>
-        <button
-          className="temple-list-search-btn"
-          style={{ backgroundColor: '#ff5722', borderColor: '#ff5722' }}
-        >
-          SEARCH
-        </button>
+        <div className="explore-title" style={{ flex: '4 0 0%' }}>
+          {/* Search Bar */}
+          <h1 className="temple-list-title">EXPLORE MORE TEMPLES</h1>
+          <div className="temple-list-search search-bar">
+            <div className="temple-list-search-wrapper">
+              <input
+                type="text"
+                className="temple-list-search-input"
+                placeholder="Search Temples..."
+                value={search}
+                onChange={(e) => dispatch(setSearch(e.target.value))}
+              />
+              {search && (
+                <button
+                  className="temple-list-clear-btn"
+                  onClick={() => dispatch(setSearch(''))}
+                >
+                  ✖
+                </button>
+              )}
+            </div>
+            <button
+              className="temple-list-search-btn"
+              style={{ backgroundColor: '#ff5722', borderColor: '#ff5722' }}
+            >
+              SEARCH
+            </button>
+          </div>
+        </div>
+        <div className="event-img-second" style={{ flex: '3 0 0%', position: 'relative' }}>
+          {events.length > 1 && (
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <img
+                src={getEventImageUrl(events[1])}
+                alt={events[1]?.title || 'Event 2'}
+                onClick={() => navigate('/events')}
+                style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
+              />
+              <div style={{
+                position: 'absolute',
+                top: '10px',
+                left: '10px',
+                backgroundColor: '#ff5722',
+                color: 'white',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                zIndex: 1,
+                animation: 'blink 1s infinite'
+              }}>
+                On Going Event
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-
       {/* Temples Grid */}
       <div className="temple-list-grid">
         {loading
