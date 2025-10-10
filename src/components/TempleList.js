@@ -84,7 +84,34 @@ const TempleList = () => {
 
   return (
     <div className="temple-list-container">
-      <style dangerouslySetInnerHTML={{__html: `@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } } @media (max-width: 768px) { .event-container { flex-direction: column; gap: 1rem; } .event-img-second { display: none; } .event-img-first { width: 100%; text-align: center; } .explore-title { order: 2; } .search-bar { order: 3; } }`}} />
+
+
+      <style>{`
+        @keyframes blink {
+          0% { opacity: 1; }
+          50% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+          .event-container {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .event-img-second {
+            display: none;
+          }
+          .event-img-first {
+            width: 100%;
+            text-align: center;
+          }
+          .explore-title {
+            order: 2;
+          }
+          .search-bar {
+            order: 3;
+          }
+        }
+      `}</style>
 
       {/* 🔔 Important Notice */}
       <div className="notice-bar">

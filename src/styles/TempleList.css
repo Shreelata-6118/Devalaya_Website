@@ -209,21 +209,13 @@
   display: inline-block;
   white-space: nowrap;
   padding-left: 100%;
-  animation: scrollNotice 120s linear infinite;
   will-change: transform;
   transform: translateZ(0); 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes scrollNotice {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
+
 
 
 

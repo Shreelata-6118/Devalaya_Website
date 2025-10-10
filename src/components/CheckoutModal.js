@@ -4,12 +4,70 @@ import 'react-day-picker/dist/style.css';
 import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../context/UserAuthContext';
 import api, { updateDevoteeProfile, getDevoteeProfile } from '../api/api';
+import Select from 'react-select';
 import '../styles/CheckoutModal.css';
 
 // Get API base URL from the centralized config
 const getApiBaseUrl = () => {
   return api.defaults.baseURL;
 };
+
+// List of Indian states and union territories
+const INDIAN_STATES = [
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+  'Andaman and Nicobar Islands',
+  'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Delhi',
+  'Jammu and Kashmir',
+  'Ladakh',
+  'Lakshadweep',
+  'Puducherry'
+];
+
+// List of Sankalpa options
+const SANKALPA_OPTIONS = [
+  'for family',
+  'for father',
+  'for mother',
+  'for husband',
+  'for wife',
+  'for son',
+  'for daughter',
+  'for brother',
+  'for sister'
+];
+
+// Prepare options for react-select
+const sankalpaOptions = SANKALPA_OPTIONS.map(option => ({ value: option, label: option }));
+const stateOptions = INDIAN_STATES.map(state => ({ value: state, label: state }));
 
 // Razorpay script loader
 function loadRazorpayScript(src) {
@@ -136,6 +194,7 @@ const CheckoutModal = ({ open, onClose }) => {
     street2: '',
     area: '',
     city: '',
+    district: '',
     state: '',
     pincode: ''
   });
@@ -654,12 +713,14 @@ const CheckoutModal = ({ open, onClose }) => {
 
                     <div className="mb-2">
                       <label>Sankalpa </label>
-                      <input
-                        type="text"
-                        value={address.sankalpa}
-                        onChange={(e) => setAddress({ ...address, sankalpa: e.target.value })}
-                        className="form-control"
-                        placeholder="Sankalpa"
+                      <Select
+                        options={sankalpaOptions}
+                        value={sankalpaOptions.find(o => o.value === address.sankalpa) || null}
+                        onChange={(selected) => setAddress({ ...address, sankalpa: selected ? selected.value : '' })}
+                        placeholder="Select Sankalpa"
+                        isClearable
+                        className="react-select-container"
+                        classNamePrefix="react-select"
                       />
                     </div>
 
@@ -722,13 +783,26 @@ const CheckoutModal = ({ open, onClose }) => {
                     </div>
 
                     <div className="mb-2">
-                      <label>State <span className="required-asterisk">*</span></label>
+                      <label>District</label>
                       <input
                         type="text"
-                        value={address.state}
-                        onChange={(e) => setAddress({ ...address, state: e.target.value })}
+                        value={address.district}
+                        onChange={(e) => setAddress({ ...address, district: e.target.value })}
                         className="form-control"
-                        placeholder="State"
+                        placeholder="District"
+                      />
+                    </div>
+
+                    <div className="mb-2">
+                      <label>State <span className="required-asterisk">*</span></label>
+                      <Select
+                        options={stateOptions}
+                        value={stateOptions.find(o => o.value === address.state) || null}
+                        onChange={(selected) => setAddress({ ...address, state: selected ? selected.value : '' })}
+                        placeholder="Select State"
+                        isClearable
+                        className="react-select-container"
+                        classNamePrefix="react-select"
                       />
                       {errors.state && <span className="checkout-error">{errors.state}</span>}
                     </div>
