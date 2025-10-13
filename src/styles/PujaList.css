@@ -255,6 +255,39 @@
   padding: 8px 5px; 
   font-size: 12px;
 }
+/* ⭐ Price + Star Rating Row */
+.price-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between price and rating */
+  margin-top: 8px;
+}
+
+/* Price styling */
+.puja-price {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Star rating container */
+.ratings {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #242221; /* orange color for star */
+  font-weight: 500;
+  gap: 4px; /* space between star and rating number */
+}
+
+/* Make only the star icon slightly smaller */
+.rating .star {
+  color: #ff8c00; /* orange */
+  font-size: 0.95rem; /* adjust as needed */
+  margin-right: 2px;
+}
+
+
 
 @media (max-width: 1300px) {
   .puja-cards {
