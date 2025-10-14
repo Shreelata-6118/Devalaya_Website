@@ -466,8 +466,8 @@ const CheckoutModal = ({ open, onClose }) => {
         const quantity = item.quantity || 1;
         for (let i = 0; i < quantity; i++) {
           requests.push({
-            comment: `( Nakshatra: ${address.nakshatra || ''} )( Gotra: ${address.gotra || ''} )( Rashi: ${address.rashi || ''} )`,
-            is_prasadam_delivery: true,
+            comment: `( Sankalpa: ${address.sankalpa || ''} )( Nakshatra: ${address.nakshatra || ''} )( Gotra: ${address.gotra || ''} )( Rashi: ${address.rashi || ''} )`,
+            is_prasadam_delivery: item.prasad_delivery,
             pooja_date: address.bookingDate,
             pooja: item.id || item.pooja_id,
             name: address.devoteeName || profile?.name || profile?.firstName || 'Devotee',
