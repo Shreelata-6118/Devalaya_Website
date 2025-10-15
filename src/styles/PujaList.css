@@ -280,10 +280,10 @@
   gap: 4px; /* space between star and rating number */
 }
 
-/* Make only the star icon slightly smaller */
+
 .rating .star {
-  color: #ff8c00; /* orange */
-  font-size: 0.95rem; /* adjust as needed */
+  color: #ff8c00; 
+  font-size: 0.95rem; 
   margin-right: 2px;
 }
 
