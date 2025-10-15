@@ -17,7 +17,7 @@ const TempleDetails = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [zoomedImage, setZoomedImage] = useState(null);
+  const [zoomedImage, setZoomedImage] = useState(null); // { url: string, index: number }
   const BASE_IMAGE_URL = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
@@ -96,8 +96,19 @@ const TempleDetails = () => {
     return imgPath.startsWith('http') ? imgPath : `${BASE_IMAGE_URL}${imgPath.startsWith('/') ? '' : '/'}${imgPath}`;
   };
 
-  const handleImageClick = (imageUrl) => setZoomedImage(imageUrl);
+  const handleImageClick = (imageUrl) => {
+    const index = temple.images.findIndex(img => getFullImageUrl(img.image) === imageUrl);
+    setZoomedImage({ url: imageUrl, index });
+  };
   const closeZoomedImage = () => setZoomedImage(null);
+
+  const navigateImage = (direction) => {
+    if (!zoomedImage || !temple.images) return;
+    const totalImages = temple.images.length;
+    const newIndex = (zoomedImage.index + direction + totalImages) % totalImages;
+    const newUrl = getFullImageUrl(temple.images[newIndex].image);
+    setZoomedImage({ url: newUrl, index: newIndex });
+  };
 
   // ✅ Render Puja Cards
   const renderCards = (data) => (
@@ -199,7 +210,9 @@ const TempleDetails = () => {
       {zoomedImage && (
         <div className="zoomed-image-overlay" onClick={closeZoomedImage}>
           <div className="zoomed-image-container">
-            <img src={zoomedImage} alt="Zoomed" className="zoomed-image" onClick={(e) => e.stopPropagation()} />
+            <button className="nav-prev" onClick={(e) => { e.stopPropagation(); navigateImage(-1); }}>{'<'}</button>
+            <img src={zoomedImage.url} alt="Zoomed" className="zoomed-image" onClick={(e) => e.stopPropagation()} />
+            <button className="nav-next" onClick={(e) => { e.stopPropagation(); navigateImage(1); }}>{'>'}</button>
             <button className="close-zoomed-image" onClick={closeZoomedImage}>&times;</button>
           </div>
         </div>
