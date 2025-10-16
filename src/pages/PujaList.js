@@ -749,8 +749,8 @@ const PujaList = () => {
           filteredPujas.map((puja, idx) => {
             const imageUrl = getImageUrl(puja);
             const price = puja.amount || puja.original_cost || puja.cost || 0;
-            const rating = puja.rating || 4.9;
-            const reviewsCount = puja.reviews_count || 10000;
+            const rating = puja.rating || 4.7;
+            const reviewsCount = puja.reviews_count || 100;
 
             return (
               <div key={puja.id || idx} className="puja-card">

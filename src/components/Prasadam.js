@@ -1,5 +1,6 @@
 
 // import React, { useEffect, useState } from "react";
+// import { FaStar } from "react-icons/fa";
 // import api from "../api/api";
 // import "../styles/Prasadam.css";
 
@@ -168,6 +169,9 @@
 //           const costDisplay =
 //             rawCost && !isNaN(rawCost) ? `₹ ${rawCost}/-` : "₹ Not specified";
 
+//           const rating = prasadam.rating || 4.8; // default rating
+//           const reviewsCount = prasadam.reviews_count || 250; // default reviews
+
 //           return (
 //             <div key={prasadam.id} className="prasadam-card">
 //               <div className="event-top-label">Prasadam</div>
@@ -202,9 +206,21 @@
 //                   <span style={{ color: "#ff6600", fontWeight: "bold" }}>Details:</span>{" "}
 //                   {prasadam.details || poojaPrasadam.details || "N/A"}
 //                 </p>
-//                 <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Include's:</span> {includes}</p>
-//                 <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Benefits:</span> {benefits}</p>
-//                 <p><span style={{ color: "#ff6600", fontWeight: "bold" }}>Cost:</span> {costDisplay}</p>
+//                 <p>
+//                   <span style={{ color: "#ff6600", fontWeight: "bold" }}>Include's:</span> {includes}
+//                 </p>
+//                 <p>
+//                   <span style={{ color: "#ff6600", fontWeight: "bold" }}>Benefits:</span> {benefits}
+//                 </p>
+
+//                 {/* ✅ Inline Cost + Rating */}
+//                 <div className="prasadam-cost-rating">
+//                   <span className="prasadam-cost">{costDisplay}</span>
+//                   <span className="prasadam-rating">
+//                     <FaStar className="prasadam-star" /> {rating} ({reviewsCount}+ ratings)
+//                   </span>
+//                 </div>
+
 //                 <button
 //                   className="view-button"
 //                   onClick={() => addToCart(prasadam)}
@@ -227,17 +243,10 @@
 
 
 
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import api from "../api/api";
+import ReviewsPopup from "../pages/ReviewsPopup";
 import "../styles/Prasadam.css";
 
 const Prasadam = () => {
@@ -246,6 +255,8 @@ const Prasadam = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showReviews, setShowReviews] = useState(false);
+  const [selectedPuja, setSelectedPuja] = useState(null);
 
   useEffect(() => {
     const fetchPrasadam = async () => {
@@ -266,7 +277,6 @@ const Prasadam = () => {
 
         // Remove duplicates based on name + temple name
         const uniqueMap = new Map();
-
         combined.forEach((item) => {
           const poojaPrasadam = item.pooja_prasadam || {};
           const name = (item.name || poojaPrasadam.name || "").trim().toLowerCase();
@@ -277,20 +287,16 @@ const Prasadam = () => {
           ).trim().toLowerCase();
 
           const key = `${name}-${templeName}`;
-
-          if (!uniqueMap.has(key)) {
-            uniqueMap.set(key, item);
-          }
+          if (!uniqueMap.has(key)) uniqueMap.set(key, item);
         });
 
         const uniqueList = Array.from(uniqueMap.values());
-
         setPrasadamList(uniqueList);
         setFilteredList(uniqueList);
-        setLoading(false);
       } catch (err) {
         console.error("Prasadam API Error:", err);
         setError("Failed to load prasadam data.");
+      } finally {
         setLoading(false);
       }
     };
@@ -309,7 +315,6 @@ const Prasadam = () => {
       const poojaPrasadam = item.pooja_prasadam || {};
       const name = (item.name || poojaPrasadam.name || "").toLowerCase();
       const temple = (item.temple?.name || poojaPrasadam.temple?.name || "").toLowerCase();
-
       return name.includes(lower) || temple.includes(lower);
     });
 
@@ -384,29 +389,25 @@ const Prasadam = () => {
         <button className="prasadam-search-button">SEARCH</button>
       </div>
 
-      {/* Cards */}
+      {/* 🪔 Cards Section */}
       <div className="prasadam-wrapper">
         {filteredList.map((prasadam) => {
           const poojaPrasadam = prasadam.pooja_prasadam || {};
           const mediaUrl =
             prasadam.temple?.images?.[0]?.image ||
             poojaPrasadam.temple?.images?.[0]?.image;
-
           const includes = poojaPrasadam.included || prasadam.included || "Not specified";
           const benefits = poojaPrasadam.excluded || prasadam.excluded || "-";
-
           const rawCost =
             poojaPrasadam.original_cost ||
             poojaPrasadam.cost ||
             prasadam.original_cost ||
             prasadam.cost ||
             null;
-
           const costDisplay =
             rawCost && !isNaN(rawCost) ? `₹ ${rawCost}/-` : "₹ Not specified";
-
-          const rating = prasadam.rating || 4.8; // default rating
-          const reviewsCount = prasadam.reviews_count || 250; // default reviews
+          const rating = prasadam.rating || 4.8;
+          const reviewsCount = prasadam.reviews_count || 250;
 
           return (
             <div key={prasadam.id} className="prasadam-card">
@@ -414,13 +415,7 @@ const Prasadam = () => {
 
               {mediaUrl &&
                 (/\.mp4$|\.webm$|\.ogg$/i.test(mediaUrl) ? (
-                  <video
-                    src={mediaUrl}
-                    className="prasadam-video"
-                    controls
-                    autoPlay
-                    muted
-                  >
+                  <video src={mediaUrl} className="prasadam-video" controls autoPlay muted>
                     Your browser does not support video tag.
                   </video>
                 ) : (
@@ -428,16 +423,12 @@ const Prasadam = () => {
                     src={mediaUrl}
                     alt={prasadam.name}
                     className="event-image"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
+                    onError={(e) => (e.target.style.display = "none")}
                   />
                 ))}
 
               <div className="event-content">
-                <h3>
-                  🌸 {prasadam.name || poojaPrasadam.name || "Prasadam"}
-                </h3>
+                <h3>🌸 {prasadam.name || poojaPrasadam.name || "Prasadam"}</h3>
                 <p>
                   <span style={{ color: "#ff6600", fontWeight: "bold" }}>Details:</span>{" "}
                   {prasadam.details || poojaPrasadam.details || "N/A"}
@@ -452,15 +443,21 @@ const Prasadam = () => {
                 {/* ✅ Inline Cost + Rating */}
                 <div className="prasadam-cost-rating">
                   <span className="prasadam-cost">{costDisplay}</span>
-                  <span className="prasadam-rating">
+
+                  {/* ⭐ Star opens Reviews Popup */}
+                  <span
+                    className="prasadam-rating"
+                    onClick={() => {
+                      setSelectedPuja(prasadam);
+                      setShowReviews(true);
+                    }}
+                    style={{ cursor: "pointer" }}
+                  >
                     <FaStar className="prasadam-star" /> {rating} ({reviewsCount}+ ratings)
                   </span>
                 </div>
 
-                <button
-                  className="view-button"
-                  onClick={() => addToCart(prasadam)}
-                >
+                <button className="view-button" onClick={() => addToCart(prasadam)}>
                   Book ➜
                 </button>
               </div>
@@ -468,6 +465,11 @@ const Prasadam = () => {
           );
         })}
       </div>
+
+      {/* 💬 Reviews Popup */}
+      {showReviews && (
+        <ReviewsPopup puja={selectedPuja} closePopup={() => setShowReviews(false)} />
+      )}
     </div>
   );
 };
