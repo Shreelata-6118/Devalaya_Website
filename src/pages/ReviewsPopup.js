@@ -4,76 +4,16 @@
 
 // const ReviewsPopup = ({ puja, closePopup }) => {
 //   const allReviews = [
-//     {
-//       user: "Shalini Verma",
-//       date: "23 July, 2025",
-//       rating: 5,
-//       comment:
-//         "I’m grateful to Devalaya for arranging this puja online. The entire process was smooth, and I could feel a divine connection even from home. The priests chanted with full devotion. Jai Kedareswar Mahadev!",
-//     },
-//     {
-//       user: "karan joshi",
-//       date: "15 June, 2025",
-//       rating: 5,
-//       comment:
-//         "A divine experience! The video clarity was excellent, and the chanting felt so pure. Devalaya truly brings spirituality closer to everyone. Feeling blessed and thankful.",
-//     },
-//     {
-//       user: "Anita Sharma",
-//       date: "02 May, 2025",
-//       rating: 5,
-//       comment:
-//         "I never thought online pujas could be this powerful. The priests were sincere, and I could hear my name during sankalp. Thanks to Devalaya for this divine arrangement!",
-//     },
-//     {
-//       user: "Rahul Mehta",
-//       date: "28 March, 2025",
-//       rating: 4,
-//       comment:
-//         "Beautifully conducted puja! The instructions were clear and the video coverage was perfect. I recommend Devalaya to everyone seeking peace and blessings at home.",
-//     },
-//     {
-//       user: "Pooja Iyer",
-//       date: "12 February, 2025",
-//       rating: 5,
-//       comment:
-//         "An amazing initiative by Devalaya. The online Rudrabhishek felt so real and divine. It brought a sense of calm and connection with Lord Shiva in my home.",
-//     },
-//     {
-//       user: "Vikram Singh",
-//       date: "10 January, 2025",
-//       rating: 5,
-//       comment:
-//         "This was my first online puja experience and I was amazed. The Devalaya team managed everything perfectly. I felt very peaceful watching the live rituals.",
-//     },
-//     {
-//       user: "Nidhi Agarwal",
-//       date: "25 December, 2024",
-//       rating: 5,
-//       comment:
-//         "The puja was so beautifully conducted. I could clearly hear my name in the sankalp. Thank you Devalaya for allowing devotees like us to be part of such divine events.",
-//     },
-//     {
-//       user: "Ramesh Kumar",
-//       date: "14 November, 2024",
-//       rating: 5,
-//       comment:
-//         "Highly satisfied with Devalaya’s service. The communication was prompt and the puja process was transparent. I feel spiritually uplifted after participating.",
-//     },
-//     {
-//       user: "murali navi",
-//       date: "20 October, 2024",
-//       rating: 5,
-//       comment:
-//         "Devalaya’s puja brought a sense of peace and positivity into my life. The priests performed everything sincerely and the chanting filled my home with divine energy.",
-//     },
-//     {
-//       user: "Arun Joshi",
-//       date: "11 September, 2024",
-//       rating: 5,
-//       comment:
-//         "I booked the Mahamangalarti puja and it was an extraordinary experience. The entire process was seamless, and I received the prasadam promptly. Jai Bholenath!",
-//     },
+//     { user: "Shalini Verma", date: "23 July, 2025", rating: 5, comment: "I’m grateful to Devalaya for arranging this puja online. The entire process was smooth, and I could feel a divine connection even from home. The priests chanted with full devotion. Jai Kedareswar Mahadev!" },
+//     { user: "karan joshi", date: "15 June, 2025", rating: 5, comment: "A divine experience! The video clarity was excellent, and the chanting felt so pure. Devalaya truly brings spirituality closer to everyone. Feeling blessed and thankful." },
+//     { user: "Anita Sharma", date: "02 May, 2025", rating: 5, comment: "I never thought online pujas could be this powerful. The priests were sincere, and I could hear my name during sankalp. Thanks to Devalaya for this divine arrangement!" },
+//     { user: "Rahul Mehta", date: "28 March, 2025", rating: 4, comment: "Beautifully conducted puja! The instructions were clear and the video coverage was perfect. I recommend Devalaya to everyone seeking peace and blessings at home." },
+//     { user: "Pooja Iyer", date: "12 February, 2025", rating: 5, comment: "An amazing initiative by Devalaya. The online Rudrabhishek felt so real and divine. It brought a sense of calm and connection with Lord Shiva in my home." },
+//     { user: "Vikram Singh", date: "10 January, 2025", rating: 5, comment: "This was my first online puja experience and I was amazed. The Devalaya team managed everything perfectly. I felt very peaceful watching the live rituals." },
+//     { user: "Nidhi Agarwal", date: "25 December, 2024", rating: 5, comment: "The puja was so beautifully conducted. I could clearly hear my name in the sankalp. Thank you Devalaya for allowing devotees like us to be part of such divine events." },
+//     { user: "Ramesh Kumar", date: "14 November, 2024", rating: 5, comment: "Highly satisfied with Devalaya’s service. The communication was prompt and the puja process was transparent. I feel spiritually uplifted after participating." },
+//     { user: "murali navi", date: "20 October, 2024", rating: 5, comment: "Devalaya’s puja brought a sense of peace and positivity into my life. The priests performed everything sincerely and the chanting filled my home with divine energy." },
+//     { user: "Arun Joshi", date: "11 September, 2024", rating: 5, comment: "I booked the Mahamangalarti puja and it was an extraordinary experience. The entire process was seamless, and I received the prasadam promptly. Jai Bholenath!" },
 //     {
 //       user: "Kavita Nair",
 //       date: "19 August, 2024",
@@ -235,10 +175,10 @@
 //   return (
 //     <div className="reviews-overlay">
 //       <div className="reviews-popup">
-//         <button className="close-btn" onClick={closePopup}>
-//           ×
-//         </button>
-//         <h2>User Reviews</h2>
+//         <div className="sticky-header">
+//           <h2>User Reviews</h2>
+//           <button className="close-btn" onClick={closePopup}>×</button>
+//         </div>
 
 //         <div className="reviews-summary">
 //           <div>
@@ -250,7 +190,7 @@
 //             <p>Users Booked</p>
 //           </div>
 //           <div>
-//             <h3>10000+</h3>
+//             <h3>100+</h3>
 //             <p>User Reviews</p>
 //           </div>
 //         </div>
@@ -265,22 +205,16 @@
 //                   <span className="review-date">{rev.date}</span>
 //                 </div>
 //               </div>
-
 //               <div className="stars">
 //                 {Array.from({ length: rev.rating }).map((_, i) => (
 //                   <FaStar key={i} color="#FFC107" />
 //                 ))}
 //               </div>
-
 //               <p className="review-text">{rev.comment}</p>
 //             </div>
 //           ))}
-
 //           {visibleCount < allReviews.length && (
-//             <button
-//               className="read-more-btn"
-//               onClick={() => setVisibleCount((prev) => prev + 8)}
-//             >
+//             <button className="read-more-btn" onClick={() => setVisibleCount((prev) => prev + 8)}>
 //               Read More Reviews
 //             </button>
 //           )}
@@ -311,13 +245,13 @@ import "../styles/ReviewsPopup.css";
 const ReviewsPopup = ({ puja, closePopup }) => {
   const allReviews = [
     { user: "Shalini Verma", date: "23 July, 2025", rating: 5, comment: "I’m grateful to Devalaya for arranging this puja online. The entire process was smooth, and I could feel a divine connection even from home. The priests chanted with full devotion. Jai Kedareswar Mahadev!" },
-    { user: "karan joshi", date: "15 June, 2025", rating: 5, comment: "A divine experience! The video clarity was excellent, and the chanting felt so pure. Devalaya truly brings spirituality closer to everyone. Feeling blessed and thankful." },
-    { user: "Anita Sharma", date: "02 May, 2025", rating: 5, comment: "I never thought online pujas could be this powerful. The priests were sincere, and I could hear my name during sankalp. Thanks to Devalaya for this divine arrangement!" },
+    { user: "karan joshi", date: "15 June, 2025", rating: 4, comment: "A divine experience! The video clarity was excellent, and the chanting felt so pure. Devalaya truly brings spirituality closer to everyone. Feeling blessed and thankful." },
+    { user: "Anita Sharma", date: "02 May, 2025", rating: 3.5, comment: "I never thought online pujas could be this powerful. The priests were sincere, and I could hear my name during sankalp. Thanks to Devalaya for this divine arrangement!" },
     { user: "Rahul Mehta", date: "28 March, 2025", rating: 4, comment: "Beautifully conducted puja! The instructions were clear and the video coverage was perfect. I recommend Devalaya to everyone seeking peace and blessings at home." },
-    { user: "Pooja Iyer", date: "12 February, 2025", rating: 5, comment: "An amazing initiative by Devalaya. The online Rudrabhishek felt so real and divine. It brought a sense of calm and connection with Lord Shiva in my home." },
+    { user: "Pooja Iyer", date: "12 February, 2025", rating: 4.5, comment: "An amazing initiative by Devalaya. The online Rudrabhishek felt so real and divine. It brought a sense of calm and connection with Lord Shiva in my home." },
     { user: "Vikram Singh", date: "10 January, 2025", rating: 5, comment: "This was my first online puja experience and I was amazed. The Devalaya team managed everything perfectly. I felt very peaceful watching the live rituals." },
     { user: "Nidhi Agarwal", date: "25 December, 2024", rating: 5, comment: "The puja was so beautifully conducted. I could clearly hear my name in the sankalp. Thank you Devalaya for allowing devotees like us to be part of such divine events." },
-    { user: "Ramesh Kumar", date: "14 November, 2024", rating: 5, comment: "Highly satisfied with Devalaya’s service. The communication was prompt and the puja process was transparent. I feel spiritually uplifted after participating." },
+    { user: "Ramesh Kumar", date: "14 November, 2024", rating: 3, comment: "Highly satisfied with Devalaya’s service. The communication was prompt and the puja process was transparent. I feel spiritually uplifted after participating." },
     { user: "murali navi", date: "20 October, 2024", rating: 5, comment: "Devalaya’s puja brought a sense of peace and positivity into my life. The priests performed everything sincerely and the chanting filled my home with divine energy." },
     { user: "Arun Joshi", date: "11 September, 2024", rating: 5, comment: "I booked the Mahamangalarti puja and it was an extraordinary experience. The entire process was seamless, and I received the prasadam promptly. Jai Bholenath!" },
     {
@@ -481,11 +415,13 @@ const ReviewsPopup = ({ puja, closePopup }) => {
   return (
     <div className="reviews-overlay">
       <div className="reviews-popup">
+        {/* Sticky Header */}
         <div className="sticky-header">
           <h2>User Reviews</h2>
           <button className="close-btn" onClick={closePopup}>×</button>
         </div>
 
+        {/* Summary Section */}
         <div className="reviews-summary">
           <div>
             <h3>⭐ {puja.rating || 4.9}</h3>
@@ -496,11 +432,12 @@ const ReviewsPopup = ({ puja, closePopup }) => {
             <p>Users Booked</p>
           </div>
           <div>
-            <h3>10000+</h3>
+            <h3>100+</h3>
             <p>User Reviews</p>
           </div>
         </div>
 
+        {/* Reviews List */}
         <div className="reviews-list">
           {allReviews.slice(0, visibleCount).map((rev, index) => (
             <div key={index} className="review-card">
@@ -519,8 +456,12 @@ const ReviewsPopup = ({ puja, closePopup }) => {
               <p className="review-text">{rev.comment}</p>
             </div>
           ))}
+
           {visibleCount < allReviews.length && (
-            <button className="read-more-btn" onClick={() => setVisibleCount((prev) => prev + 8)}>
+            <button
+              className="read-more-btn"
+              onClick={() => setVisibleCount((prev) => prev + 8)}
+            >
               Read More Reviews
             </button>
           )}
