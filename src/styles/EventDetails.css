@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --primary-color: #ff6600;
   --text-color: #333;
   --text-light-color: #666;
@@ -227,4 +227,348 @@
 
 .event-details-back-button:hover {
   background-color: #e65c00;
+}
+
+
+
+
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.share-icon {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.share-icon:hover {
+  transform: scale(1.1);
+}
+
+.share-options {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.share-options a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.share-options a:hover {
+  color: var(--primary-color);
+}
+
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ :root {
+  --primary-color: #ff6600;
+  --text-color: #333;
+  --text-light-color: #666;
+  --card-bg-color: #fff;
+  --body-bg-color: #f9f9f9;
+  --border-color: #eee;
+}
+
+.event-details-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.event-details-header {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.event-details-loading-container,
+.event-details-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  font-size: 1.2rem;
+  color: var(--text-light-color);
+}
+
+.event-details-card {
+  background: var(--card-bg-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .event-details-card {
+    flex-direction: row;
+  }
+}
+
+.event-details-media {
+  width: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .event-details-media {
+    width: 50%;
+  }
+}
+
+.event-details-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.event-details-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.event-details-content {
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .event-details-content {
+    width: 50%;
+  }
+}
+
+.event-details-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.event-details-temple-name {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.event-details-date {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-light-color);
+  text-align: center;
+  margin: 0;
+}
+
+.event-details-section {
+  margin-bottom: 1.5rem;
+}
+
+.event-details-section h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+.event-details-section p {
+  color: var(--text-light-color);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.event-details-cost-section {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.event-details-cost-section p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.event-details-participate-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.event-details-participate-button:hover {
+  background-color: #e65c00;
+}
+
+.event-details-back-button-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.event-details-back-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+@media (max-width: 767px) {
+  .event-details-container {
+    padding: 0.5rem;
+  }
+  .event-details-card {
+    flex-direction: column;
+    overflow: visible;
+    border-radius: 1rem;
+  }
+
+  .event-details-media,
+  .event-details-content {
+    width: 100%;
+  }
+
+  .event-details-content {
+    padding: 1rem;
+  }
+
+  .event-details-header {
+    margin-top: 1rem;
+  }
+
+  .event-details-title {
+    font-size: 1.5rem;
+  }
+
+  .event-details-temple-name {
+    font-size: 1rem;
+  }
+
+  .event-details-date {
+    font-size: 0.9rem;
+  }
+
+  .event-details-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .event-details-cost-section p {
+    font-size: 1.2rem;
+  }
+
+  .event-details-participate-button {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+.event-details-back-button:hover {
+  background-color: #e65c00;
+}
+
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.share-icon {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.share-icon:hover {
+  transform: scale(1.1);
+}
+
+.share-options {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
+
+.share-options a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.share-options a:hover {
+  color: var(--primary-color);
 }
