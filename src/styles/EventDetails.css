@@ -532,10 +532,12 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+  font-size: 80px;
 }
 
 .share-icon {
   font-size: 1.4rem;
+
   color: var(--primary-color);
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -571,4 +573,9 @@
 
 .share-options a:hover {
   color: var(--primary-color);
+}
+
+.share-wrapper{
+  display: flex;
+   gap: 280px; 
 }
