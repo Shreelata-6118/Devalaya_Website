@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api/api';
-import { FaStar } from "react-icons/fa";
-import ReviewsPopup from './ReviewsPopup'; // ✅ import popup component
+import { 
+  FaStar, 
+  FaShareAlt, 
+  FaWhatsapp, 
+  FaFacebook, 
+  FaInstagram, 
+  FaTwitter, 
+  FaLink 
+} from "react-icons/fa";
+import ReviewsPopup from './ReviewsPopup';
 import '../styles/PujaDetails.css';
 
 const PujaDetails = () => {
@@ -13,7 +21,9 @@ const PujaDetails = () => {
   const [activeTab, setActiveTab] = useState('about');
   const [imageError, setImageError] = useState(false);
   const [addingToCart, setAddingToCart] = useState(false);
-  const [showReviews, setShowReviews] = useState(false); // ✅ popup visibility state
+  const [showReviews, setShowReviews] = useState(false);
+  const [showShare, setShowShare] = useState(false);
+  const shareRef = useRef(null);
 
   useEffect(() => {
     const fetchPujaDetails = async () => {
@@ -27,9 +37,19 @@ const PujaDetails = () => {
         setLoading(false);
       }
     };
-
     fetchPujaDetails();
   }, [id]);
+
+  // Close share popup on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (shareRef.current && !shareRef.current.contains(event.target)) {
+        setShowShare(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const rawImage =
     puja?.image ||
@@ -102,6 +122,9 @@ const PujaDetails = () => {
     }
   };
 
+  const shareText = `Check out this puja: ${puja?.name || ''}`;
+  const shareUrl = window.location.href;
+
   if (loading) return <div className="loading">Loading Puja Details...</div>;
   if (error) return <div className="error">{error}</div>;
   if (!puja) return <div>No puja found</div>;
@@ -120,13 +143,65 @@ const PujaDetails = () => {
         </div>
 
         <div className="puja-text-box">
-          <h2 className="puja-title">{puja.name}</h2>
+          <div className="puja-title-share">
+            <h2 className="puja-title">{puja.name}</h2>
+
+            <div className="puja-share-wrapper" ref={shareRef}>
+              <FaShareAlt
+                className="share-icon"
+                onClick={() => setShowShare(!showShare)}
+                style={{ cursor: 'pointer' }}
+              />
+
+              {showShare && (
+                <div className="puja-share-options">
+                  <a
+                    href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaWhatsapp /> WhatsApp
+                  </a>
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaFacebook /> Facebook
+                  </a>
+                  <a
+                    href={`https://www.instagram.com/?url=${encodeURIComponent(shareUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaInstagram /> Instagram
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaTwitter /> Twitter
+                  </a>
+                  <button
+                    className="copy-link-btn"
+                    onClick={() => {
+                      navigator.clipboard.writeText(shareUrl);
+                      alert('Link copied to clipboard!');
+                    }}
+                  >
+                    <FaLink /> Copy Link
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
           <p><strong>Temple:</strong> {puja.temple?.name || 'N/A'}</p>
           <p><strong>God:</strong> {puja.god?.name || 'N/A'}</p>
           <p><strong>Included:</strong> {puja.included || 'N/A'}</p>
           <p><strong>Benefits:</strong> {puja.excluded || 'N/A'}</p>
 
-          {/* ✅ Price + Rating Row */}
           <div className="price-rating-row">
             <p className="puja-price">
               <strong>Price:</strong>{' '}
@@ -217,7 +292,7 @@ const PujaDetails = () => {
         )}
       </div>
 
-      {/* ✅ Reviews Popup (only when open) */}
+      {/* Reviews Popup */}
       {showReviews && (
         <ReviewsPopup puja={puja} closePopup={() => setShowReviews(false)} />
       )}
