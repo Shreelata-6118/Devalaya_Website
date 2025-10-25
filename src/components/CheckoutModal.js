@@ -161,13 +161,16 @@ function DatePickerWithClose({ selectedDate, onDateChange, error }) {
                 setOpen(false);
               }
             }}
-            disabled={{
-              before: (() => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                return today;
-              })()
-            }}
+            disabled={[
+              {
+                before: (() => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return today;
+                })(),
+              },
+              new Date() // explicitly disable today
+            ]}
             required
           />
         </div>
@@ -224,6 +227,7 @@ const CheckoutModal = ({ open, onClose }) => {
             street2: profile?.street2 || '',
             area: data.area || profile?.area || '',
             city: data.city || profile?.city || '',
+            district: data.district || profile?.district || '',
             state: data.state || profile?.state || '',
             pincode: data.pincode || profile?.pincode || ''
           });
@@ -244,6 +248,7 @@ const CheckoutModal = ({ open, onClose }) => {
               street2: profile.street2 || '',
               area: profile.area || '',
               city: profile.city || '',
+              district: profile.district || '',
               state: profile.state || '',
               pincode: profile.pincode || ''
             });
@@ -359,6 +364,7 @@ const CheckoutModal = ({ open, onClose }) => {
           street_address_2: address.street2 || profile?.street_address_2 || profile?.address?.street_address_2 || '',
           area: address.area || profile?.area || profile?.address?.area || '',
           city: address.city || profile?.city || profile?.address?.city || '',
+          district: address.district || profile?.district || profile?.address?.district || '',
           state: address.state || profile?.state || profile?.address?.state || '',
           pincode: address.pincode || profile?.pincode || profile?.address?.pincode || '',
           phone_number: address.devoteeMobile || profile?.phone || profile?.mobile || ''
@@ -393,6 +399,7 @@ const CheckoutModal = ({ open, onClose }) => {
     if (!address.street1) newErrors.street1 = 'Required';
     if (!address.area) newErrors.area = 'Required';
     if (!address.city) newErrors.city = 'Required';
+    if (!address.district) newErrors.district = 'Required';
     if (!address.state) newErrors.state = 'Required';
     if (!address.pincode || !/^\d{6}$/.test(address.pincode))
       newErrors.pincode = 'Valid 6-digit pincode required';
@@ -411,6 +418,7 @@ const CheckoutModal = ({ open, onClose }) => {
         street2: address.street2,
         area: address.area,
         city: address.city,
+        district: address.district,
         state: address.state,
         pincode: address.pincode
       };
@@ -425,6 +433,7 @@ const CheckoutModal = ({ open, onClose }) => {
             name: address.devoteeName,
             area: address.area,
             city: address.city,
+            district: address.district,
             state: address.state,
             pincode: address.pincode,
             street_address: address.street1,
@@ -453,6 +462,7 @@ const CheckoutModal = ({ open, onClose }) => {
           street2: address.street2,
           area: address.area,
           city: address.city,
+          district: address.district,
           state: address.state,
           pincode: address.pincode,
           sankalpa: existingProfile.sankalpa || address.sankalpa,
@@ -489,6 +499,7 @@ const CheckoutModal = ({ open, onClose }) => {
             street2: address.street2,
             area: address.area,
             city: address.city,
+            district: address.district,
             state: address.state,
             pincode: address.pincode,
             booking_date: address.bookingDate,
@@ -499,6 +510,7 @@ const CheckoutModal = ({ open, onClose }) => {
               street_address_2: address.street2 || profile?.street_address_2 || profile?.address?.street_address_2 || '',
               area: address.area || profile?.area || profile?.address?.area || '',
               city: address.city || profile?.city || profile?.address?.city || '',
+              district: address.district || profile?.district || profile?.address?.district || '',
               state: address.state || profile?.state || profile?.address?.state || '',
               pincode: address.pincode || profile?.pincode || profile?.address?.pincode || '',
               phone_number: address.devoteeMobile || profile?.phone || profile?.mobile || ''
@@ -509,6 +521,7 @@ const CheckoutModal = ({ open, onClose }) => {
               street_address_2: address.street2 || '',
               area: address.area,
               city: address.city,
+              district: address.district,
               state: address.state,
               pincode: address.pincode,
               phone_number: address.devoteeMobile || profile?.phone || ''
@@ -783,7 +796,7 @@ const CheckoutModal = ({ open, onClose }) => {
                     </div>
 
                     <div className="mb-2">
-                      <label>District</label>
+                      <label>District<span className="required-asterisk">*</span></label>
                       <input
                         type="text"
                         value={address.district}
