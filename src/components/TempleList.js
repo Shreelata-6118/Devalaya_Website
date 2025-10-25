@@ -62,8 +62,8 @@ const TempleList = () => {
   const handleNext = () => page < totalPages && setPage(page + 1);
 
   const getImageUrl = (temple) => {
-    if (temple.image_url && temple.image_url !== 'null') {
-      return temple.image_url.startsWith('http') ? temple.image_url : `${BASE_URL}${temple.image_url}`;
+    if (temple.cover_image && temple.cover_image !== 'null') {
+      return temple.cover_image.startsWith('http') ? temple.cover_image : `${BASE_URL}${temple.cover_image}`;
     }
     if (temple.images && temple.images.length > 0) {
       const img = temple.images[0]?.url || temple.images[0]?.image;
