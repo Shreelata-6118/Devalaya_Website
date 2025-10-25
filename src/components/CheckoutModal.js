@@ -338,7 +338,6 @@ const CheckoutModal = ({ open, onClose }) => {
     setCharges({ prasadCost: 0, convinceCharge, shippingCharge, subtotal, gst, total });
   }, [cart, orderData, showCalculatedCost]);
 
-
   async function fetchRazorpayKey() {
     try {
       const response = await api.get('/api/v1/devotee/payment_key/');
@@ -942,3 +941,4 @@ const CheckoutModal = ({ open, onClose }) => {
 };
 
 export default CheckoutModal;
+

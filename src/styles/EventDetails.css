@@ -1,4 +1,4 @@
-:root {
+:root { 
   --primary-color: #ff6600;
   --text-color: #333;
   --text-light-color: #666;
@@ -227,4 +227,82 @@
 
 .event-details-back-button:hover {
   background-color: #e65c00;
+}
+
+/* === ABOUT + SHARE FIX SECTION === */
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.share-icon {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.share-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Prevent cropping: reposition to stay fully visible */
+.event-share-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+.event-title-share{
+  display: flex;
+  gap: 300px;
+}
+.event-share-options {
+  position: absolute;
+  top: 35px;
+  right: 0; /* Ensure dropdown opens leftwards */
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9999; /* Higher to stay above content */
+  min-width: 150px;
+  white-space: nowrap;
+  transform-origin: top right;
+}
+
+.event-share-options a,
+.event-share-options button.copy-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.2s, opacity 0.2s;
+  justify-content: flex-start;
+}
+
+.event-share-options a:nth-child(1) { background-color: #25D366; } /* WhatsApp */
+.event-share-options a:nth-child(2) { background-color: #1877F2; } /* Facebook */
+.event-share-options a:nth-child(3) { background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af); } /* Instagram */
+.event-share-options a:nth-child(4) { background-color: #1DA1F2; } /* Twitter */
+.event-share-options button.copy-link-btn { background-color: #555; color: #fff; }
+
+.event-share-options a:hover,
+.event-share-options button.copy-link-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.event-share-options a svg,
+.event-share-options button svg {
+  font-size: 18px;
 }
