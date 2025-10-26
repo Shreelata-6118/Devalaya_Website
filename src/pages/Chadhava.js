@@ -79,7 +79,7 @@ const Chadhava = () => {
 
                   <img
                     src={chadhavaImage}
-                    // alt={item.pooja_chadhava?.images?.[0]?.title || item.temple?.name || item.name}
+                    alt={item.pooja_chadhava?.images?.[0]?.title || item.temple?.name || item.name}
                     className="chadhava-image"
                   />
 
