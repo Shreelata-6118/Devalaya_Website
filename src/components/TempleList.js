@@ -120,15 +120,22 @@ const TempleList = () => {
   const handleNext = () => page < totalPages && setPage(page + 1);
 
   const getImageUrl = (temple) => {
-    if (temple.cover_image && temple.cover_image !== 'null') {
-      return temple.cover_image.startsWith('http') ? temple.cover_image : `${BASE_URL}${temple.cover_image}`;
-    }
-    if (temple.images && temple.images.length > 0) {
-      const img = temple.images[0]?.url || temple.images[0]?.image;
-      return img && img !== 'null' ? (img.startsWith('http') ? img : `${BASE_URL}${img}`) : null;
-    }
-    return 'https://via.placeholder.com/300x200?text=No+Image';
-  };
+  // If cover_image exists and is not null
+  if (temple.cover_image) {
+    return temple.cover_image.startsWith('http')
+      ? temple.cover_image
+      : `${BASE_URL}${temple.cover_image}`;
+  }
+
+  // If cover_image is null, use the first temple image
+  const firstImg = temple.images?.[0]?.url || temple.images?.[0]?.image;
+  if (firstImg) {
+    return firstImg.startsWith('http') ? firstImg : `${BASE_URL}${firstImg}`;
+  }
+
+  // Fallback placeholder
+  return 'https://via.placeholder.com/300x200?text=No+Image';
+};
 
   const getEventImageUrl = (event) => {
     if (event && event.image) {
