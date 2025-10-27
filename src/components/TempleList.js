@@ -20,14 +20,72 @@ const TempleList = () => {
   const navigate = useNavigate();
 
   const [events, setEvents] = useState([]);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+      setTouchEnd(null); // otherwise the swipe is fired even with a single touch
+      setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+      if (!touchStart || !touchEnd) return;
+      const distance = touchStart - touchEnd;
+      const isLeftSwipe = distance > minSwipeDistance;
+      const isRightSwipe = distance < -minSwipeDistance;
+      if (isLeftSwipe) {
+          setCurrentEventIndex((prevIndex) => (prevIndex + 1) % events.length);
+      }
+      if (isRightSwipe) {
+          setCurrentEventIndex((prevIndex) => (prevIndex - 1 + events.length) % events.length);
+      }
+      setTouchStart(null);
+      setTouchEnd(null);
+  };
+
+  const onMouseDown = (e) => {
+    e.preventDefault();
+    setIsMouseDown(true);
+    setTouchStart(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    e.preventDefault();
+    if (!isMouseDown) return;
+    setTouchEnd(e.clientX);
+  };
+
+  const onMouseUp = () => {
+    if (!isMouseDown) return;
+    setIsMouseDown(false);
+    onTouchEnd();
+  };
+
+
+  useEffect(() => {
+    if (events.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentEventIndex((prevIndex) => (prevIndex + 1) % events.length);
+      }, 10000);
+      return () => clearInterval(timer);
+    }
+  }, [events]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await api.get('/api/v1/devotee/event/?page=1&size=2');
+        const response = await api.get('/api/v1/devotee/event/?page=1&size=10');
         const data = response?.data;
         if (data?.results) {
-          setEvents(data.results);
+          const filteredEvents = data.results.filter(e => e.event_devotee && e.image);
+          const sortedEvents = filteredEvents.sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
+          setEvents(sortedEvents);
         }
       } catch (error) {
         console.error('Error fetching events:', error.response?.data || error.message);
@@ -62,15 +120,22 @@ const TempleList = () => {
   const handleNext = () => page < totalPages && setPage(page + 1);
 
   const getImageUrl = (temple) => {
-    if (temple.image_url && temple.image_url !== 'null') {
-      return temple.image_url.startsWith('http') ? temple.image_url : `${BASE_URL}${temple.image_url}`;
-    }
-    if (temple.images && temple.images.length > 0) {
-      const img = temple.images[0]?.url || temple.images[0]?.image;
-      return img && img !== 'null' ? (img.startsWith('http') ? img : `${BASE_URL}${img}`) : null;
-    }
-    return 'https://via.placeholder.com/300x200?text=No+Image';
-  };
+  // If cover_image exists and is not null
+  if (temple.cover_image) {
+    return temple.cover_image.startsWith('http')
+      ? temple.cover_image
+      : `${BASE_URL}${temple.cover_image}`;
+  }
+
+  // If cover_image is null, use the first temple image
+  const firstImg = temple.images?.[0]?.url || temple.images?.[0]?.image;
+  if (firstImg) {
+    return firstImg.startsWith('http') ? firstImg : `${BASE_URL}${firstImg}`;
+  }
+
+  // Fallback placeholder
+  return 'https://via.placeholder.com/300x200?text=No+Image';
+};
 
   const getEventImageUrl = (event) => {
     if (event && event.image) {
@@ -84,7 +149,33 @@ const TempleList = () => {
 
   return (
     <div className="temple-list-container">
-      <style dangerouslySetInnerHTML={{__html: `@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } } @media (max-width: 768px) { .event-container { flex-direction: column; gap: 1rem; } .event-img-second { display: none; } .event-img-first { width: 100%; text-align: center; } .explore-title { order: 2; } .search-bar { order: 3; } }`}} />
+
+      <style>{`
+        @keyframes blink {
+          0% { opacity: 1; }
+          50% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+          .event-container {
+            flex-direction: column;
+            gap: 1rem;
+          }
+          .event-img-second {
+            display: none;
+          }
+          .event-img-first {
+            width: 100%;
+            text-align: center;
+          }
+          .explore-title {
+            order: 2;
+          }
+          .search-bar {
+            order: 3;
+          }
+        }
+      `}</style>
 
       {/* 🔔 Important Notice */}
       <div className="notice-bar">
@@ -93,13 +184,23 @@ const TempleList = () => {
           ⚠ ಪ್ರಮುಖ ಸೂಚನೆ: www.devalayas.com ಮತ್ತು csc.devalayas.com ಮಾತ್ರ ಅಧಿಕೃತವಾಗಿ ಅಧಿಕೃತವಾದ ಆನ್‌ಲೈನ್ ದೇವಾಲಯ ಸೇವೆಗಳಾದ ಪೂಜೆ ಬುಕಿಂಗ್ ಮತ್ತು ಪ್ರಸಾದ ವಿತರಣೆಗೆ ವೇದಿಕೆಗಳಾಗಿದ್ದು, ಇದನ್ನು ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಮತ್ತು ಆಯಾ ದೇವಾಲಯ ಅಧಿಕಾರಿಗಳು CSC ಇ-ಗವರ್ನೆನ್ಸ್ ಸಹಯೋಗದೊಂದಿಗೆ ಅಧಿಕೃತಗೊಳಿಸಿದ್ದಾರೆ. ಯಾವುದೇ ಸಂದೇಹಗಳಿದ್ದರೆ, ನಮ್ಮ ಅಧಿಕೃತ ಬೆಂಬಲ ತಂಡವನ್ನು ಸಂಪರ್ಕಿಸುವ ಮೂಲಕ ದೃಢೀಕರಣವನ್ನು ಪರಿಶೀಲಿಸಿ. ನಂಬಿಕೆಯೊಂದಿಗೆ ಬುಕ್ ಮಾಡಿ. ಭಕ್ತಿಯಿಂದ ಸೇವೆ ಮಾಡಿ.
         </div>
       </div>
-      <div className="event-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '20px', width: '100%', flexWrap: 'nowrap' }}>
+      <div
+        className="event-container"
+        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '20px', width: '100%', flexWrap: 'nowrap', userSelect: 'none' }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+      >
         <div className="event-img-first" style={{ flex: '3 0 0%', position: 'relative' }}>
           {events.length > 0 && (
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <img
-                src={getEventImageUrl(events[0])}
-                alt={events[0]?.title || 'Event 1'}
+                src={getEventImageUrl(events[currentEventIndex])}
+                alt={events[currentEventIndex]?.title || 'Event'}
                 onClick={() => navigate('/events')}
                 style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
               />
@@ -117,6 +218,28 @@ const TempleList = () => {
                 animation: 'blink 1s infinite'
               }}>
                 On Going Event
+              </div>
+              <div style={{
+                position: 'absolute',
+                bottom: '10px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex'
+              }}>
+                {events.map((_, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      height: '10px',
+                      width: '10px',
+                      backgroundColor: currentEventIndex === idx ? '#ff5722' : 'white',
+                      borderRadius: '50%',
+                      margin: '0 3px',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => setCurrentEventIndex(idx)}
+                  ></span>
+                ))}
               </div>
             </div>
           )}
@@ -154,8 +277,8 @@ const TempleList = () => {
           {events.length > 1 && (
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <img
-                src={getEventImageUrl(events[1])}
-                alt={events[1]?.title || 'Event 2'}
+                src={getEventImageUrl(events[(currentEventIndex + 1) % events.length])}
+                alt={events[(currentEventIndex + 1) % events.length]?.title || 'Event'}
                 onClick={() => navigate('/events')}
                 style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
               />
@@ -173,6 +296,28 @@ const TempleList = () => {
                 animation: 'blink 1s infinite'
               }}>
                 On Going Event
+              </div>
+              <div style={{
+                position: 'absolute',
+                bottom: '10px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex'
+              }}>
+                {events.map((_, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      height: '10px',
+                      width: '10px',
+                      backgroundColor: (currentEventIndex + 1) % events.length === idx ? '#ff5722' : 'white',
+                      borderRadius: '50%',
+                      margin: '0 3px',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => setCurrentEventIndex(idx)}
+                  ></span>
+                ))}
               </div>
             </div>
           )}

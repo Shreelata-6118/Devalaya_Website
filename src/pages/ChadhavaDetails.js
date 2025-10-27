@@ -38,6 +38,7 @@ const ChadhavaDetails = () => {
   const [subtitle, setSubtitle] = useState("A Sacred Opportunity to Break Free from Fear, Obstacles & Negativity");
   const [includedItems, setIncludedItems] = useState("");
   const [excludedItems, setExcludedItems] = useState("");
+  const [isPrasadamDelivery, setIsPrasadamDelivery] = useState(false);
 
   // Checkout form state
   const [address, setAddress] = useState({
@@ -93,27 +94,7 @@ const ChadhavaDetails = () => {
     total: 0,
   });
 
-  // Sample images for the carousel (you can replace with actual images)
-  const [carouselImages, setCarouselImages] = useState([
-    {
-      id: 1,
-      src: "/placeholder.png", // Replace with actual Lord Bhairav image
-      title: "Bhairav Chadhava",
-      subtitle: "Vikrant Bhairav Temple, Ujjain"
-    },
-    {
-      id: 2,
-      src: "/placeholder.png", // Replace with temple structure image
-      title: "Benefits of Chadhava",
-      subtitle: "Protection from negative energies, Freedom from fear and mental stress, Success in all efforts"
-    },
-    {
-      id: 3,
-      src: "/placeholder.png", // Replace with another temple image
-      title: "Bhairav Chadhava",
-      subtitle: "Complete offering package"
-    }
-  ]);
+  const [carouselImages, setCarouselImages] = useState([]);
 
   // Fetch chadhava items
   useEffect(() => {
@@ -143,6 +124,9 @@ const ChadhavaDetails = () => {
           }
           if(firstResult.pooja_chadhava?.excluded){
             setExcludedItems(firstResult.pooja_chadhava.excluded);
+          }
+          if(firstResult.pooja_chadhava?.prasad_delivery !== undefined){
+            setIsPrasadamDelivery(firstResult.pooja_chadhava.prasad_delivery);
           }
 
           if (firstResult.pooja_chadhava?.images?.length > 0) {
@@ -266,7 +250,7 @@ const ChadhavaDetails = () => {
         requests: [
           {
             is_chadhava: true,
-            is_prasadam_delivery: false, // Always true to get delivery charges
+            is_prasadam_delivery: isPrasadamDelivery,
             pooja: selectedItems[0]?.poojaId, // Assuming all selected items belong to the same pooja
             temple: selectedItems[0]?.templeId, // Assuming all selected items belong to the same temple
             requested_chadhava_items: selectedItems.map((item) => ({
@@ -645,7 +629,7 @@ const ChadhavaDetails = () => {
                         name="bookingDate"
                         value={address.bookingDate}
                         onChange={handleInputChange}
-                        min={new Date().toISOString().split("T")[0]}
+                        min={new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                         required
                       />
                       {errors.bookingDate && (

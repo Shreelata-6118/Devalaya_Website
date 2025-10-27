@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
+import BASE_URL from '../config';
 import '../styles/EventsPage.css';
 import moment from 'moment';
 
@@ -11,7 +12,6 @@ const EventsPage = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://beta.devalayas.com';
 
   useEffect(() => {
     const fetchEvents = async () => {
