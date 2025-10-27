@@ -140,6 +140,7 @@ const Navbar = () => {
             <li><NavLink to="/prasadam">PRASADAM</NavLink></li>
             <li><NavLink to="/events">EVENTS</NavLink></li>
             <li><NavLink to="/chadhava">CHADHAVA</NavLink></li>
+            <li><NavLink to="/panchang">PANCHANG</NavLink></li>
             <li><NavLink to="/about">ABOUT US</NavLink></li>
             <li><NavLink to="/contact">CONTACT US</NavLink></li>
           </ul>

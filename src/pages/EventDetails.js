@@ -58,22 +58,46 @@ const EventDetails = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showShare]);
 
+  // const handleParticipate = () => {
+  //   if (!user) {
+  //     setShowOtpLogin(true);
+  //   } else {
+  //     if (event && event.pooja) {
+  //       const cartItem = { ...event.pooja, quantity: 1 };
+  //       localStorage.setItem('cart', JSON.stringify([cartItem]));
+  //       setShowCheckout(true);
+  //     }
+  //   }
+  // };
+
   const handleParticipate = () => {
-    if (!user) {
-      setShowOtpLogin(true);
-    } else {
-      if (event && event.pooja) {
-        const cartItem = { ...event.pooja, quantity: 1 };
-        localStorage.setItem('cart', JSON.stringify([cartItem]));
-        setShowCheckout(true);
-      }
-    }
-  };
+  if (!user) {
+    setShowOtpLogin(true);
+  } else if (event && event.pooja) {
+    // ✅ detect if Prasadam is actually mentioned in details or included section
+    const hasPrasadam =
+      event.pooja.name?.toLowerCase().includes("prasadam") ||
+      event.pooja.included?.toLowerCase().includes("prasadam") ||
+      event.details?.toLowerCase().includes("prasadam");
+
+    const cartItem = {
+      ...event.pooja,
+      quantity: 1,
+      prasadam: hasPrasadam, // only mark true if explicitly found
+    };
+
+    console.log("🛒 Added to cart:", cartItem); // for debugging
+    localStorage.setItem("cart", JSON.stringify([cartItem]));
+    setShowCheckout(true);
+  }
+};
+
 
   const handleLoginSuccess = () => {
     setShowOtpLogin(false);
     handleParticipate();
   };
+
 
   const getMediaUrl = (event) => {
     if (event.video) return event.video;
