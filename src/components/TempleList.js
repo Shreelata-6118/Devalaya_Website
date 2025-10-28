@@ -50,6 +50,7 @@ const TempleList = () => {
   };
 
   const onMouseDown = (e) => {
+    if (e.target.closest('.temple-list-search-wrapper')) return;
     e.preventDefault();
     setIsMouseDown(true);
     setTouchStart(e.clientX);
@@ -254,7 +255,13 @@ const TempleList = () => {
                 className="temple-list-search-input"
                 placeholder="Search Temples..."
                 value={search}
-                onChange={(e) => dispatch(setSearch(e.target.value))}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  dispatch(setSearch(e.target.value));
+                }}
+                onKeyPress={(e) => e.stopPropagation()}
+                onFocus={(e) => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               />
               {search && (
                 <button

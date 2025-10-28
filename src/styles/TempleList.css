@@ -175,14 +175,14 @@
 }
 
 .temple-list-pagination .btn-primary {
-  background-color: #0d6efd;
+  background-color: #f44336;
   color: white;
 }
 
 .temple-list-pagination .btn-outline-primary,
 .temple-list-pagination .btn-outline-secondary {
-  border-color: #0d6efd;
-  color: #111;
+  border-color: #f44336;
+  color: #f44336;
 }
 
 .temple-list-pagination .btn:disabled {
