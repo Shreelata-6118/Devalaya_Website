@@ -1,0 +1,154 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getWeddingCards } from '../api/api';
+import '../styles/WeddingCard.css';
+
+const WeddingCard = () => {
+  const [poojaCards, setPoojaCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredCards, setFilteredCards] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchWeddingCards = async () => {
+      try {
+        setLoading(true);
+        const data = await getWeddingCards(1); // Start with page 1
+        const cards = data.results || data;
+        setPoojaCards(cards);
+        setFilteredCards(cards);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch wedding cards. Please try again.');
+        console.error('Error fetching wedding cards:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeddingCards();
+  }, []);
+
+  useEffect(() => {
+    let filtered = poojaCards;
+
+    if (searchTerm) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      filtered = filtered.filter((card) =>
+        card.name?.toLowerCase().includes(lowercasedSearchTerm) ||
+        card.details?.toLowerCase().includes(lowercasedSearchTerm) ||
+        card.temple?.name?.toLowerCase().includes(lowercasedSearchTerm)
+      );
+    }
+
+    setFilteredCards(filtered);
+  }, [poojaCards, searchTerm]);
+
+  const getImageUrl = (card) => {
+    if (card.images && card.images.length > 0) {
+      return card.images[0].image;
+    }
+    return 'https://via.placeholder.com/300x200?text=Wedding+Card';
+  };
+
+  const handleCardClick = (cardId) => {
+    // Navigate to puja details or a specific wedding card page
+    navigate(`/puja/${cardId}`);
+  };
+
+  if (loading) {
+    return (
+      <div className="wedding-card-container">
+        <h2 className="wedding-heading">WEDDING CARDS</h2>
+        <div className="wedding-cards">
+          {[...Array(8)].map((_, index) => (
+            <div className="wedding-card skeleton" key={index}>
+              <div className="wedding-image skeleton-img" />
+              <h3>Loading...</h3>
+              <p>Fetching description...</p>
+              <p>Loading temple...</p>
+              <button className="view-button skeleton-button">Loading...</button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="wedding-card-container">
+        <h2 className="wedding-heading">WEDDING CARDS</h2>
+        <div className="error">{error}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wedding-card-container">
+      <h2 className="wedding-heading">WEDDING CARDS</h2>
+
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Search Wedding Cards..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+        <button className="search-button">Search</button>
+      </div>
+
+      <div className="wedding-cards">
+        {filteredCards.length > 0 ? (
+          filteredCards.map((card) => (
+            <div
+              className="wedding-card"
+              key={card.id}
+              onClick={() => handleCardClick(card.id)}
+            >
+              {/* 🔖 Top Left Label */}
+              <div className="wedding-top-label">
+                Pooja
+              </div>
+
+              <img
+                src={getImageUrl(card)}
+                alt={card.name}
+                className="wedding-image"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://via.placeholder.com/300x200?text=Wedding+Card';
+                }}
+              />
+              <div className="wedding-content">
+                <h3>{card.name || 'Unnamed Pooja'}</h3>
+                <p className="wedding-description">
+                  {card.details || card.included || 'No description available.'}
+                </p>
+                {card.temple && (
+                  <p className="wedding-temple">
+                    <strong>Temple:</strong> {card.temple.name}
+                  </p>
+                )}
+                {card.original_cost && (
+                  <p className="wedding-price">
+                    <strong>Price:</strong> ₹{card.original_cost}
+                  </p>
+                )}
+                <button className="view-button">VIEW DETAILS</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No wedding cards found for the search term.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default WeddingCard;

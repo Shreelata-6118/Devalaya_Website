@@ -33,6 +33,7 @@ import SplpujaDetails from "../pages/SplpujaDetails";
 // import PujaTemples from "../pages/PujaTemples";
 import Chadhava from "../pages/Chadhava";
 import ChadhavaDetails from "../pages/ChadhavaDetails";
+import WeddingCard from "../pages/weddingcard";
 
 
 
@@ -74,6 +75,7 @@ const AllRouters = () => {
       <Route path="/puja-details/:id" element={<PujaDetails />} />
       <Route path="/chadhava" element={<Chadhava />} />
       <Route path="/chadhava/:id" element={<ChadhavaDetails />} />
+       <Route path="/weddingcards" element={<WeddingCard />} />
     
     </Routes>
   );
