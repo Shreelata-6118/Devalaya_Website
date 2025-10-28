@@ -541,8 +541,41 @@ const CheckoutModal = ({ open, onClose }) => {
         setShowAddressConfirmation(true);
       } catch (err) {
         console.error('Error submitting order:', err);
-        const errorMessage = err.response?.data || err.message || 'Unknown error';
-        alert('Failed to create pooja order: ' + JSON.stringify(errorMessage));
+        const errorData = err.response?.data;
+        if (errorData?.errors && Array.isArray(errorData.errors)) {
+          const fieldErrors = {};
+          errorData.errors.forEach(error => {
+            const field = error.field;
+            const message = error.message?.[0] || error.message || 'Invalid input';
+            // Map API field names to form field names
+            if (field === 'prasadam_address__area') {
+              fieldErrors.area = message;
+            } else if (field === 'prasadam_address__street_address_1') {
+              fieldErrors.street1 = message;
+            } else if (field === 'prasadam_address__city') {
+              fieldErrors.city = message;
+            } else if (field === 'prasadam_address__district') {
+              fieldErrors.district = message;
+            } else if (field === 'prasadam_address__state') {
+              fieldErrors.state = message;
+            } else if (field === 'prasadam_address__pincode') {
+              fieldErrors.pincode = message;
+            } else if (field === 'prasadam_address__phone_number') {
+              fieldErrors.devoteeMobile = message;
+            } else if (field === 'name') {
+              fieldErrors.devoteeName = message;
+            } else if (field === 'pooja_date') {
+              fieldErrors.bookingDate = message;
+            } else {
+              // For unmapped fields, show as general error
+              fieldErrors.general = message;
+            }
+          });
+          setErrors(fieldErrors);
+        } else {
+          const errorMessage = errorData?.detail || err.message || 'Unknown error';
+          setErrors({ general: errorMessage });
+        }
       }
     }
   };
