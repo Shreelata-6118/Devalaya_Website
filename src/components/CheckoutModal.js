@@ -52,21 +52,7 @@ const INDIAN_STATES = [
   'Puducherry'
 ];
 
-// List of Sankalpa options
-const SANKALPA_OPTIONS = [
-  'for family',
-  'for father',
-  'for mother',
-  'for husband',
-  'for wife',
-  'for son',
-  'for daughter',
-  'for brother',
-  'for sister'
-];
-
-// Prepare options for react-select
-const sankalpaOptions = SANKALPA_OPTIONS.map(option => ({ value: option, label: option }));
+// Sankalpa is now a text input field
 const stateOptions = INDIAN_STATES.map(state => ({ value: state, label: state }));
 
 // Razorpay script loader
@@ -757,15 +743,13 @@ const CheckoutModal = ({ open, onClose }) => {
                     </div>
 
                     <div className="mb-2">
-                      <label>Sankalpa </label>
-                      <Select
-                        options={sankalpaOptions}
-                        value={sankalpaOptions.find(o => o.value === address.sankalpa) || null}
-                        onChange={(selected) => setAddress({ ...address, sankalpa: selected ? selected.value : '' })}
-                        placeholder="Select Sankalpa"
-                        isClearable
-                        className="react-select-container"
-                        classNamePrefix="react-select"
+                      <label>Sankalpa</label>
+                      <input
+                        type="text"
+                        value={address.sankalpa}
+                        onChange={(e) => setAddress({ ...address, sankalpa: e.target.value })}
+                        className="form-control"
+                        placeholder="Sankalpa"
                       />
                     </div>
 
