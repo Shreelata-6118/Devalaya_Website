@@ -326,7 +326,10 @@ const TempleList = () => {
               <img
                 src={getWeddingCardImageUrl(weddingCards[currentWeddingCardIndex])}
                 alt={weddingCards[currentWeddingCardIndex]?.name || 'Wedding Card'}
-                onClick={() => navigate('/weddingcard')}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/weddingcard');
+                }}
                 style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
                 onError={(e) => {
                   e.target.onerror = null;

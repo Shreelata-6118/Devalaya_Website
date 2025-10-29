@@ -58,6 +58,40 @@ const WeddingCard = () => {
     navigate(`/puja/${cardId}`);
   };
 
+  const handleBookNow = (e, card) => {
+    e.stopPropagation(); // Prevent card click navigation
+
+    try {
+      const currentCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItemIndex = currentCart.findIndex(item => item.id === card.id);
+
+      if (existingItemIndex === -1) {
+        // Add new item
+        const cartItem = {
+          id: card.id,
+          name: card.name || 'Unnamed Pooja',
+          details: card.details || card.included || 'No description available.',
+          original_cost: card.original_cost || 0,
+          cost: card.original_cost || 0,
+          images: card.images || [],
+          temple: card.temple,
+          quantity: 1
+        };
+        currentCart.push(cartItem);
+      } else {
+        // Increment quantity if already exists
+        currentCart[existingItemIndex].quantity += 1;
+      }
+
+      localStorage.setItem('cart', JSON.stringify(currentCart));
+      window.dispatchEvent(new Event('storage'));
+      window.dispatchEvent(new Event('open-cart-drawer'));
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add item to cart. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="wedding-card-container">
@@ -139,7 +173,7 @@ const WeddingCard = () => {
                     <strong>Price:</strong> ₹{card.original_cost}
                   </p>
                 )}
-                <button className="view-button">VIEW DETAILS</button>
+                <button className="view-button" onClick={(e) => handleBookNow(e, card)}>BookNow</button>
               </div>
             </div>
           ))
