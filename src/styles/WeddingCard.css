@@ -17,14 +17,14 @@
 
 /* === Search Box === */
 .search-box {
-  margin-top: 40px;
+  margin-top: 10px;
   text-align: center;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: inherit;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .search-input {
@@ -161,11 +161,6 @@
   color: #666;
   line-height: 1.5;
   flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .wedding-temple {
@@ -179,6 +174,17 @@
   margin: 5px 0 15px 0;
   color: #f44336;
   font-weight: 600;
+}
+
+.wedding-instruction {
+  font-size: 14px;
+  margin: 10px 0;
+  color: #333;
+  line-height: 1.5;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 }
 
 /* View Button */

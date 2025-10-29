@@ -95,7 +95,7 @@ const WeddingCard = () => {
   if (loading) {
     return (
       <div className="wedding-card-container">
-        <h2 className="wedding-heading">WEDDING CARDS</h2>
+        <h2 className="wedding-heading">WEDDING CARDS Blessings</h2>
         <div className="wedding-cards">
           {[...Array(8)].map((_, index) => (
             <div className="wedding-card skeleton" key={index}>
@@ -114,7 +114,7 @@ const WeddingCard = () => {
   if (error) {
     return (
       <div className="wedding-card-container">
-        <h2 className="wedding-heading">WEDDING CARDS</h2>
+        <h2 className="wedding-heading">WEDDING CARDS Blessings</h2>
         <div className="error">{error}</div>
       </div>
     );
@@ -122,12 +122,12 @@ const WeddingCard = () => {
 
   return (
     <div className="wedding-card-container">
-      <h2 className="wedding-heading">WEDDING CARDS</h2>
+      <h2 className="wedding-heading">WEDDING CARD BLESSINGS</h2>
 
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search Wedding Cards..."
+          placeholder="Search temples offering wedding card blessings..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
@@ -141,7 +141,6 @@ const WeddingCard = () => {
             <div
               className="wedding-card"
               key={card.id}
-              onClick={() => handleCardClick(card.id)}
             >
               {/* 🔖 Top Left Label */}
               <div className="wedding-top-label">
@@ -161,19 +160,28 @@ const WeddingCard = () => {
               <div className="wedding-content">
                 <h3>{card.name || 'Unnamed Pooja'}</h3>
                 <p className="wedding-description">
-                  {card.details || card.included || 'No description available.'}
+                  <strong style={{ color: '#f44336' }}>Details:</strong> {card.details || 'No description available.'}
+                </p>
+                <p className="wedding-description">
+                  <strong style={{ color: '#f44336' }}>Include's:</strong> {card.included || 'No includes available.'}
+                </p>
+                <p className="wedding-description">
+                  <strong style={{ color: '#f44336' }}>Benefits:</strong> {card.excluded || 'No benefits available.'}
                 </p>
                 {card.temple && (
                   <p className="wedding-temple">
-                    <strong>Temple:</strong> {card.temple.name}
+                    <strong style={{color:'#f44336'}}>Temple:</strong> {card.temple.name}
                   </p>
                 )}
+                <p className="wedding-instruction">
+                 <strong>Instruction:</strong> Print the invoice, pack it along with the wedding card, and send it to the temple address.
+                </p>
                 {card.original_cost && (
                   <p className="wedding-price">
                     <strong>Price:</strong> ₹{card.original_cost}
                   </p>
                 )}
-                <button className="view-button" onClick={(e) => handleBookNow(e, card)}>BookNow</button>
+                <button className="view-button" onClick={(e) => handleBookNow(e, card)}>participate Now</button>
               </div>
             </div>
           ))
