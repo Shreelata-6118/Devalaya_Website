@@ -75,7 +75,7 @@ const AllRouters = () => {
       <Route path="/puja-details/:id" element={<PujaDetails />} />
       <Route path="/chadhava" element={<Chadhava />} />
       <Route path="/chadhava/:id" element={<ChadhavaDetails />} />
-       <Route path="/weddingcards" element={<WeddingCard />} />
+       <Route path="/weddingcard" element={<WeddingCard />} />
     
     </Routes>
   );

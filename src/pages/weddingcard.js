@@ -111,7 +111,7 @@ const WeddingCard = () => {
             >
               {/* 🔖 Top Left Label */}
               <div className="wedding-top-label">
-                Pooja
+                Temple
               </div>
 
               <img
