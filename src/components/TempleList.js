@@ -4,7 +4,8 @@ import { fetchTemples, setSearch } from '../redux/templeSlice';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TempleList.css';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import api from '../api/api';
+import api, { getWeddingCards } from '../api/api';
+import weddingImg from '../assets/Wedding/2.webp';
 
 const SkeletonCard = () => (
   <div className="temple-list-card skeleton">
@@ -24,6 +25,8 @@ const TempleList = () => {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const [weddingCards, setWeddingCards] = useState([]);
+  const [currentWeddingCardIndex, setCurrentWeddingCardIndex] = useState(0);
 
   const minSwipeDistance = 50;
 
@@ -79,6 +82,15 @@ const TempleList = () => {
   }, [events]);
 
   useEffect(() => {
+    if (weddingCards.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentWeddingCardIndex((prevIndex) => (prevIndex + 1) % weddingCards.length);
+      }, 10000);
+      return () => clearInterval(timer);
+    }
+  }, [weddingCards]);
+
+  useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await api.get('/api/v1/devotee/event/?page=1&size=10');
@@ -94,6 +106,23 @@ const TempleList = () => {
     };
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    const fetchWeddingCards = async () => {
+      try {
+        const data = await getWeddingCards(1);
+        if (data?.results) {
+          const filteredCards = data.results.filter(p => p.images && p.images.length > 0);
+          setWeddingCards(filteredCards);
+        }
+      } catch (error) {
+        console.error('Error fetching wedding cards:', error.response?.data || error.message);
+      }
+    };
+    fetchWeddingCards();
+  }, []);
+
+
 
   const {
     temples = [],
@@ -148,6 +177,18 @@ const TempleList = () => {
     return 'https://via.placeholder.com/300x200?text=No+Image'; // Fallback image
   };
 
+  const getWeddingCardImageUrl = (card) => {
+    if (card && card.images && card.images.length > 0) {
+      const imageUrl = card.images[0].url || card.images[0].image;
+      if (imageUrl) {
+        return imageUrl.startsWith('http') ? imageUrl : `${BASE_URL}${imageUrl}`;
+      }
+    }
+    return 'https://via.placeholder.com/300x200?text=Wedding+Card'; // Fallback image
+  };
+
+
+
   return (
     <div className="temple-list-container">
 
@@ -156,6 +197,9 @@ const TempleList = () => {
           0% { opacity: 1; }
           50% { opacity: 0; }
           100% { opacity: 1; }
+        }
+        .wedding-small-screen-img {
+          display: none;
         }
         @media (max-width: 768px) {
           .event-container {
@@ -174,6 +218,22 @@ const TempleList = () => {
           }
           .search-bar {
             order: 3;
+          }
+          .wedding-small-screen-img {
+            display: block;
+          }
+          .temple-list-title {
+            font-size: 30px;
+            text-align: center;
+            word-wrap: break-word;
+          }
+          .temple-list-search-input {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+          }
+          .temple-list-search-btn {
+            font-size: 0.9rem;
+            padding: 8px 16px;
           }
         }
       `}</style>
@@ -246,6 +306,37 @@ const TempleList = () => {
           )}
         </div>
         <div className="explore-title" style={{ flex: '4 0 0%' }}>
+          {/* Wedding Image for Small Screens */}
+          <div style={{ position: 'relative', textAlign: 'center' }} className="wedding-small-screen-img">
+            <img
+              src={weddingImg}
+              alt="Wedding"
+              onClick={() => navigate('/weddingcard')}
+              style={{
+                width: '100%',
+                maxWidth: '80%',
+                height: 'auto',
+                margin: '0 auto 10px auto',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}
+            />
+            <div style={{
+                  position: 'absolute',
+                  top: '0px',
+                  left: '0px',
+                  backgroundColor: '#ff5722',
+                  color: 'white',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  zIndex: 1,
+                  animation: 'blink 1s infinite'
+                }}>
+                  Wedding Card Blessings
+            </div>
+          </div>
           {/* Search Bar */}
           <h1 className="temple-list-title">EXPLORE MORE TEMPLES</h1>
           <div className="temple-list-search search-bar">
@@ -281,13 +372,20 @@ const TempleList = () => {
           </div>
         </div>
         <div className="event-img-second" style={{ flex: '3 0 0%', position: 'relative' }}>
-          {events.length > 1 && (
+          {weddingCards.length > 0 && (
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <img
-                src={getEventImageUrl(events[(currentEventIndex + 1) % events.length])}
-                alt={events[(currentEventIndex + 1) % events.length]?.title || 'Event'}
-                onClick={() => navigate('/events')}
+                src={getWeddingCardImageUrl(weddingCards[currentWeddingCardIndex])}
+                alt={weddingCards[currentWeddingCardIndex]?.name || 'Wedding Card'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate('/weddingcard');
+                }}
                 style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://via.placeholder.com/300x200?text=Wedding+Card';
+                }}
               />
               <div style={{
                 position: 'absolute',
@@ -302,7 +400,7 @@ const TempleList = () => {
                 zIndex: 1,
                 animation: 'blink 1s infinite'
               }}>
-                On Going Event
+                Wedding card blessings
               </div>
               <div style={{
                 position: 'absolute',
@@ -311,18 +409,18 @@ const TempleList = () => {
                 transform: 'translateX(-50%)',
                 display: 'flex'
               }}>
-                {events.map((_, idx) => (
+                {weddingCards.map((_, idx) => (
                   <span
                     key={idx}
                     style={{
                       height: '10px',
                       width: '10px',
-                      backgroundColor: (currentEventIndex + 1) % events.length === idx ? '#ff5722' : 'white',
+                      backgroundColor: currentWeddingCardIndex === idx ? '#ff5722' : 'white',
                       borderRadius: '50%',
                       margin: '0 3px',
                       cursor: 'pointer'
                     }}
-                    onClick={() => setCurrentEventIndex(idx)}
+                    onClick={() => setCurrentWeddingCardIndex(idx)}
                   ></span>
                 ))}
               </div>
@@ -330,6 +428,8 @@ const TempleList = () => {
           )}
         </div>
       </div>
+
+
       {/* Temples Grid */}
       <div className="temple-list-grid">
         {loading

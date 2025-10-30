@@ -207,7 +207,7 @@ export const logout = async () => {
     // Get the user token
     const userToken = localStorage.getItem('authToken');
     const token = userToken || presetToken;
-    
+
     // Make the API call with explicit Authorization header
     await api.get('/api/v1/auth/logout/', {
       headers: {
@@ -222,6 +222,17 @@ export const logout = async () => {
   localStorage.removeItem('authToken');
   localStorage.removeItem('devoteeProfile');
   // mobileNumber is retained for fallback
+};
+
+// ✅ Get wedding cards
+export const getWeddingCards = async (page = 1) => {
+  try {
+    const response = await api.get(`/api/v1/devotee/pooja/?page=${page}&search=wedding%20card`);
+    return response.data;
+  } catch (error) {
+    console.error('❌ Error fetching wedding cards:', error.response?.data || error.message);
+    throw error;
+  }
 };
 
 export default api;

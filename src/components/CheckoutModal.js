@@ -52,21 +52,7 @@ const INDIAN_STATES = [
   'Puducherry'
 ];
 
-// List of Sankalpa options
-const SANKALPA_OPTIONS = [
-  'for family',
-  'for father',
-  'for mother',
-  'for husband',
-  'for wife',
-  'for son',
-  'for daughter',
-  'for brother',
-  'for sister'
-];
-
-// Prepare options for react-select
-const sankalpaOptions = SANKALPA_OPTIONS.map(option => ({ value: option, label: option }));
+// Sankalpa is now a text input field
 const stateOptions = INDIAN_STATES.map(state => ({ value: state, label: state }));
 
 // Razorpay script loader
@@ -541,8 +527,41 @@ const CheckoutModal = ({ open, onClose }) => {
         setShowAddressConfirmation(true);
       } catch (err) {
         console.error('Error submitting order:', err);
-        const errorMessage = err.response?.data || err.message || 'Unknown error';
-        alert('Failed to create pooja order: ' + JSON.stringify(errorMessage));
+        const errorData = err.response?.data;
+        if (errorData?.errors && Array.isArray(errorData.errors)) {
+          const fieldErrors = {};
+          errorData.errors.forEach(error => {
+            const field = error.field;
+            const message = error.message?.[0] || error.message || 'Invalid input';
+            // Map API field names to form field names
+            if (field === 'prasadam_address__area') {
+              fieldErrors.area = message;
+            } else if (field === 'prasadam_address__street_address_1') {
+              fieldErrors.street1 = message;
+            } else if (field === 'prasadam_address__city') {
+              fieldErrors.city = message;
+            } else if (field === 'prasadam_address__district') {
+              fieldErrors.district = message;
+            } else if (field === 'prasadam_address__state') {
+              fieldErrors.state = message;
+            } else if (field === 'prasadam_address__pincode') {
+              fieldErrors.pincode = message;
+            } else if (field === 'prasadam_address__phone_number') {
+              fieldErrors.devoteeMobile = message;
+            } else if (field === 'name') {
+              fieldErrors.devoteeName = message;
+            } else if (field === 'pooja_date') {
+              fieldErrors.bookingDate = message;
+            } else {
+              // For unmapped fields, show as general error
+              fieldErrors.general = message;
+            }
+          });
+          setErrors(fieldErrors);
+        } else {
+          const errorMessage = errorData?.detail || err.message || 'Unknown error';
+          setErrors({ general: errorMessage });
+        }
       }
     }
   };
@@ -724,15 +743,13 @@ const CheckoutModal = ({ open, onClose }) => {
                     </div>
 
                     <div className="mb-2">
-                      <label>Sankalpa </label>
-                      <Select
-                        options={sankalpaOptions}
-                        value={sankalpaOptions.find(o => o.value === address.sankalpa) || null}
-                        onChange={(selected) => setAddress({ ...address, sankalpa: selected ? selected.value : '' })}
-                        placeholder="Select Sankalpa"
-                        isClearable
-                        className="react-select-container"
-                        classNamePrefix="react-select"
+                      <label>Sankalpa</label>
+                      <input
+                        type="text"
+                        value={address.sankalpa}
+                        onChange={(e) => setAddress({ ...address, sankalpa: e.target.value })}
+                        className="form-control"
+                        placeholder="Sankalpa"
                       />
                     </div>
 

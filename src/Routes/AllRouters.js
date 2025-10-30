@@ -33,9 +33,6 @@ import SplpujaDetails from "../pages/SplpujaDetails";
 // import PujaTemples from "../pages/PujaTemples";
 import Chadhava from "../pages/Chadhava";
 import ChadhavaDetails from "../pages/ChadhavaDetails";
-import Panchang from "../components/Panchang";
-
-
 
 
 
@@ -77,7 +74,6 @@ const AllRouters = () => {
       <Route path="/puja-details/:id" element={<PujaDetails />} />
       <Route path="/chadhava" element={<Chadhava />} />
       <Route path="/chadhava/:id" element={<ChadhavaDetails />} />
-      <Route path="/panchang" element={<Panchang />} />
     
     </Routes>
   );
