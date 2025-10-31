@@ -371,8 +371,9 @@ const TempleList = () => {
             </button>
           </div>
         </div>
+        {/* //weddingcard img carsual */}
         <div className="event-img-second" style={{ flex: '3 0 0%', position: 'relative' }}>
-          {weddingCards.length > 0 && (
+          {weddingCards.length > 0 ? (
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <img
                 src={getWeddingCardImageUrl(weddingCards[currentWeddingCardIndex])}
@@ -425,6 +426,54 @@ const TempleList = () => {
                 ))}
               </div>
             </div>
+          ) : (
+            events.length > 0 && (
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <img
+                  src={getEventImageUrl(events[(currentEventIndex + 1) % events.length])}
+                  alt={events[(currentEventIndex + 1) % events.length]?.title || 'Event'}
+                  onClick={() => navigate('/events')}
+                  style={{ width: '80%', height: 'auto', borderRadius: '8px', objectFit: 'cover', margin: '10px auto 0 auto', display: 'block', cursor: 'pointer' }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  top: '10px',
+                  left: '10px',
+                  backgroundColor: '#ff5722',
+                  color: 'white',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  zIndex: 1,
+                  animation: 'blink 1s infinite'
+                }}>
+                  On Going Event
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  bottom: '10px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex'
+                }}>
+                  {events.map((_, idx) => (
+                    <span
+                      key={idx}
+                      style={{
+                        height: '10px',
+                        width: '10px',
+                        backgroundColor: (currentEventIndex + 1) % events.length === idx ? '#ff5722' : 'white',
+                        borderRadius: '50%',
+                        margin: '0 3px',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => setCurrentEventIndex((idx - 1 + events.length) % events.length)}
+                    ></span>
+                  ))}
+                </div>
+              </div>
+            )
           )}
         </div>
       </div>
