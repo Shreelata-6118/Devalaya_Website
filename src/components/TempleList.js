@@ -307,6 +307,7 @@ const TempleList = () => {
         </div>
         <div className="explore-title" style={{ flex: '4 0 0%' }}>
           {/* Wedding Image for Small Screens */}
+          {weddingCards.length > 0 && (
           <div style={{ position: 'relative', textAlign: 'center' }} className="wedding-small-screen-img">
             <img
               src={weddingImg}
@@ -337,6 +338,7 @@ const TempleList = () => {
                   Wedding Card Blessings
             </div>
           </div>
+          )}
           {/* Search Bar */}
           <h1 className="temple-list-title">EXPLORE MORE TEMPLES</h1>
           <div className="temple-list-search search-bar">
