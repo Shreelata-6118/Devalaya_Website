@@ -693,6 +693,12 @@ const CheckoutModal = ({ open, onClose }) => {
                   <strong>Rashi,Nakshatra,Gotra:</strong> {address.nakshatra || 'N/A'}<br />
                   <strong>Booking Date:</strong> {address.bookingDate}
                 </div>
+                                <img
+                  src={require('../assets/posters/4.webp')}
+                  alt="Poster"
+                  style={{ width: '100%', marginTop: '20px',borderRadius: '8px', objectFit: 'cover'}}
+                />
+
               </div>
             ) : (
               <>
@@ -950,6 +956,14 @@ const CheckoutModal = ({ open, onClose }) => {
                 </button>
               </div>
             )}
+                 {!showAddressConfirmation && (
+              <img
+                src={require('../assets/posters/2.webp')}
+                alt="Poster"
+                style={{ width: '100%', marginTop: '20px', borderRadius: '5px' }}
+              />
+            )}
+
           </div>
         </div>
       </div>
