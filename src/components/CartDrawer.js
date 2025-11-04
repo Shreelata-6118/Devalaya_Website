@@ -4,6 +4,35 @@ import CheckoutModal from './CheckoutModal';
 import '../styles/CartDrawer.css';
 import { useNavigate } from 'react-router-dom';
 
+const posterImages = [
+  require('../assets/posters/1/1-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/1/2-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/1/3-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/1/4-ezgif.com-video-to-webp-converter.webp'),
+];
+
+const ImageCarousel = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === posterImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <img
+      src={posterImages[currentImageIndex]}
+      alt="Poster"
+      style={{ width: '100%', marginTop: '20px', borderRadius: '8px', objectFit: 'cover' }}
+    />
+  );
+};
+
 const CartDrawer = ({ open, onClose }) => {
   const [cart, setCart] = useState([]);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
@@ -168,6 +197,7 @@ const CartDrawer = ({ open, onClose }) => {
             </button>
           </div>
           <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+          <ImageCarousel />
         </div>
       </div>
     </div>
