@@ -5,7 +5,39 @@ import { useNavigate } from 'react-router-dom';
 import { useUserAuth } from '../context/UserAuthContext';
 import api, { updateDevoteeProfile, getDevoteeProfile } from '../api/api';
 import Select from 'react-select';
-import '../styles/CheckoutModal.css';
+import '../styles/CheckoutModal.css'
+import '../assets/posters/2/blessingposters1280x720px2-ezgif.com-video-to-webp-converter.webp';
+
+
+const posterImages = [
+  require('../assets/posters/3/1-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/3/2-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/3/3-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/3/4-ezgif.com-video-to-webp-converter.webp'),
+  require('../assets/posters/2/blessingposters1280x720px2-ezgif.com-video-to-webp-converter.webp'),
+];
+
+const ImageCarousel = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === posterImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <img
+      src={posterImages[currentImageIndex]}
+      alt="Poster"
+      style={{ width: '100%', marginTop: '20px', borderRadius: '8px', objectFit: 'cover' }}
+    />
+  );
+};
 
 // Get API base URL from the centralized config
 const getApiBaseUrl = () => {
@@ -693,11 +725,7 @@ const CheckoutModal = ({ open, onClose }) => {
                   <strong>Rashi,Nakshatra,Gotra:</strong> {address.nakshatra || 'N/A'}<br />
                   <strong>Booking Date:</strong> {address.bookingDate}
                 </div>
-                                <img
-                  src={require('../assets/posters/4.webp')}
-                  alt="Poster"
-                  style={{ width: '100%', marginTop: '20px',borderRadius: '8px', objectFit: 'cover'}}
-                />
+                                <ImageCarousel />
 
               </div>
             ) : (
@@ -957,11 +985,11 @@ const CheckoutModal = ({ open, onClose }) => {
               </div>
             )}
                  {!showAddressConfirmation && (
-              <img
-                src={require('../assets/posters/2.webp')}
-                alt="Poster"
-                style={{ width: '100%', marginTop: '20px', borderRadius: '5px' }}
-              />
+          <img
+      src={require('../assets/posters/2/blessingposters1280x720px2-ezgif.com-video-to-webp-converter.webp')}
+      alt="Poster"
+      style={{ width: '100%', marginTop: '20px', borderRadius: '8px', objectFit: 'cover' }}
+    />
             )}
 
           </div>
